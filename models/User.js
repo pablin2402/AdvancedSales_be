@@ -4,7 +4,6 @@ const clientSchema = new Schema({
   name: { type: String, require: true }, //REQUIRED
   lastName: { type: String, require: true },
   profilePicture: { type: String, require: true },
-  userIdRol: { type: String, require: true },//REQUIRED
   icon: { type: String, require: true },//REQUIRED or DEFAULT
   creationDate: { type: Date, default: Date.now }, 
   directionId: {type: String, require: true},

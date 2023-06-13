@@ -7,7 +7,6 @@ const carrouselController = require("../controllers/CarrouselController");
 const kanbanController = require("../controllers/KanbanController");
 const quotationController = require("../controllers/QuotationController");
 const priceController = require("../controllers/PriceController");
-const inventoryController = require("../controllers/InventoryController");
 const userController = require("../controllers/ClientController");
 const {verificarAuth} = require("../middlewares/authentication.js");
 const orderController = require("../controllers/OrderController");
@@ -18,11 +17,8 @@ router
 .post("/", whatsAppController.ReceivedMessage)
 .post("/message", whatsAppController.SendMessage)
 .get("/messagesList", verificarAuth ,whatsAppController.getList)
-.post("/client", whatsAppController.postClient)
 .post("/product/id", productController.getProductsById)
 .post("/product", productController.postProduct)
-.post("/product/list", whatsAppController.getMessagesById)
-.post("/client/list", whatsAppController.getClientInfoById)
 .get("/kanban", kanbanController.getListOfKanban)
 .post("/kanban/kanbanId", kanbanController.postKanbanByKanbanId)
 .post("/kanban/id", kanbanController.findIdKanbanByClient)
@@ -35,8 +31,6 @@ router
 .post("/quotation", quotationController.postQuotation)
 .post("/price/product", priceController.getPriceByProductId)
 .post("/price", priceController.postPrice)
-.get("/inventory", inventoryController.getListOfInventary)
-.post("/inventory", inventoryController.postInventary)
 .post("/user", userController.postNewAccount)
 .post("/login", userController.getUser)
 .post("/order", orderController.postOrder)
@@ -44,7 +38,9 @@ router
 .get("/mail/user/:email",gmailController.getUser)
 .get("/mail/message",gmailController.getDrafts)
 .get("/mail/message/id",gmailController.getMessagesById)
+.post("/mail/message/id",gmailController.deleteMessagesById)
+.post("/mail/message/key",gmailController.findMessagesByKeyMessage)
 .post("/mail",gmailController.sendMail)
-.post("/user/client", whatsAppController.getClients);
+.post("/mail/body/id",gmailController.getBodyMessage)
 
 module.exports = router;

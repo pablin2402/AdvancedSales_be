@@ -1,4 +1,3 @@
-const fs = require("fs");
 const ProductCategory = require("../models/ProductCategory");
 
 const getCategory = async (req, res) => {

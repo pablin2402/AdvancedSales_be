@@ -76,7 +76,7 @@ const SendMessage = (req, res) => {
   }
 };
 const getClients = async (req, res) => {
-  const clientList = await User.find({id_owner:String(req.body.id_owner),});
+  const clientList = await User.find({id_owner:String(req.body.id_owner)});
   res.json(clientList);
 };
 
@@ -86,7 +86,6 @@ const postClient = (req, res) => {
       name: req.body.name,
       lastName: req.body.lastName,
       profilePicture: req.body.profilePicture,
-      userIdRol: req.body.userIdRol, 
       icon: req.body.icon, 
       directionId: req.body.directionId,
       number: req.body.number, 
@@ -94,7 +93,7 @@ const postClient = (req, res) => {
       email: req.body.email,
       socialNetwork: req.body.socialNetwork,
       notes: req.body.notes,
-      id_client: req.body.id_client,
+      id_user: req.body.id_user,
       id_owner: req.body.id_owner
 
     });
@@ -136,11 +135,6 @@ const getMessagesById = async (req, res) => {
   const clientList = await Message.find({id_message:String(req.body.id_message),});
   res.json(clientList);
 };
-const getClientInfoById =  async (req, res) =>{
-  const clientList = await User.find({id_user: String(req.body.id_user)});
-  res.json(clientList);
-
-}
 module.exports = {
   VerifyToken,
   ReceivedMessage,
@@ -148,6 +142,5 @@ module.exports = {
   getList,
   postClient,
   getClients,
-  getMessagesById,
-  getClientInfoById
+  getMessagesById
 };

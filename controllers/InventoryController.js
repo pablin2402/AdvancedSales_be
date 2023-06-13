@@ -13,7 +13,8 @@ const postInventary = (req, res) => {
     quantity:  req.body.quantity,
     dueDate:  req.body.dueDate,
     dueDateRequired:  req.body.dueDateRequired,
-    store: req.body.store
+    store: req.body.store,
+    id: req.body._id
     });
     inventory.save((err) => {
       if (err) {
@@ -29,8 +30,31 @@ const getInventaryByProductId = async (req, res) =>{
   const inventary = await Inventary.find({productId:String(req.body.productId),});
   res.json(inventary);
 }
+
+const updateQuantity = async (req, res) => {
+  try {
+    console.log(req.body.productId);
+    console.log(req.body.quantity);
+
+    const updatedInventory = await Inventory.findOneAndUpdate(
+      { _id: req.body.productId },
+      { quantity: req.body.quantity },
+      { new: true }
+    );
+
+    if (updatedInventory) {
+      console.log('Cantidad del inventario actualizada:', updatedInventory);
+    } else {
+      console.log('Inventario no encontrado');
+    }
+  } catch (error) {
+    console.error('Error al actualizar la cantidad del inventario:', error);
+  }
+}
+
 module.exports = {
     getListOfInventary,
     postInventary,
     getInventaryByProductId,
+    updateQuantity
 };

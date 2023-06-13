@@ -2,6 +2,9 @@ const express = require("express");
 const morgan = require('morgan');
 
 const apiRoute = require("./routes/routes");
+const inventaryRoute = require("./routes/inventary.route");
+const userRoute = require("./routes/client.route");
+
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -22,6 +25,8 @@ app.use(cors());
 
 //ROUTES
 app.use("/whatsapp", apiRoute);
+app.use("/whatsapp", inventaryRoute);
+app.use("/whatsapp", userRoute);
 
 app.listen(app.get('Port'), () => {
     console.log(`server on port 1337 `);
