@@ -37,12 +37,6 @@ const updateManagementQuantity = async (req, res) => {
       { quantity: req.body.quantity },
       { new: true }
     );
-
-    if (updatedInventory) {
-      console.log('Cantidad del inventario actualizada:', updatedInventory);
-    } else {
-      console.log('Inventario no encontrado');
-    }
   } catch (error) {
     console.error('Error al actualizar la cantidad del inventario:', error);
   }

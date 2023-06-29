@@ -6,13 +6,19 @@ const orderSchema = new Schema({
   receiveNumber:{ type: Number, require: true },
   creationDate: { type: Date, default: Date.now },
   noteAditional: { type: String, require: true },
-  color: { type: String, require: true },
   userId: { type: String, require: true },
   id_owner: { type: String, require: true },
   products: { type : Array , "default" : [] },
   dissccount: { type: Number, require: true },
   tax: { type: Number, require: true },
   totalAmount: { type: Number, require: true },
+  nit: { type: Number, require: true },
+  razonSocial: { type: String, require: true },
+  cellphone: { type: Number, require: true },
+  direction: { type: String, require: true },
+  zona: { type: String, require: true },
+  city: { type: String, require: true },
+
 });
 
 module.exports = mongoose.model("Order", orderSchema);

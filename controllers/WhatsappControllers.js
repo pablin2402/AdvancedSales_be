@@ -76,10 +76,17 @@ const SendMessage = (req, res) => {
   }
 };
 const getClients = async (req, res) => {
-  const clientList = await User.find({id_owner:String(req.body.id_owner)});
+  const clientList = await User.find({id_owner:String(req.body.id_owner),status:"SHOW"});
   res.json(clientList);
 };
-
+const getClientsArchived = async (req, res) => {
+  const clientList = await User.find({id_owner:String(req.body.id_owner),status:"ARCHIVED"});
+  res.json(clientList);
+};
+const getClientInfoById = async (req, res) => {
+  const clientList = await User.find({id_user:String(req.body.id_user)});
+  res.json(clientList);
+};
 const postClient = (req, res) => { 
   try {
    const clients = new User({
@@ -94,7 +101,8 @@ const postClient = (req, res) => {
       socialNetwork: req.body.socialNetwork,
       notes: req.body.notes,
       id_user: req.body.id_user,
-      id_owner: req.body.id_owner
+      id_owner: req.body.id_owner,
+      status: "ARCHIVED"
 
     });
     console.log(req.body);
@@ -107,6 +115,25 @@ const postClient = (req, res) => {
     });
   } catch (e) {
     myConsole.log(e);
+  }
+};
+const updateUserStatus = async (req, res) => {
+  const { id_user, status } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { id_user },
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User status updated successfully', user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update user status', error });
   }
 };
 function GetTextUser(messages) {
@@ -131,7 +158,6 @@ function GetTextUser(messages) {
   return text;
 };
 const getMessagesById = async (req, res) => {
-  
   const clientList = await Message.find({id_message:String(req.body.id_message),});
   res.json(clientList);
 };
@@ -140,7 +166,10 @@ module.exports = {
   ReceivedMessage,
   SendMessage,
   getList,
+  getClientInfoById,
   postClient,
   getClients,
-  getMessagesById
+  getMessagesById,
+  getClientsArchived,
+  updateUserStatus
 };
