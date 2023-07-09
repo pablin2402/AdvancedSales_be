@@ -17,7 +17,7 @@ require("dotenv").config();
 const app = express();
 //Settings
 
-app.set('Port', 4000);
+app.set('Port', 3001);
 app.use(morgan('dev'));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
