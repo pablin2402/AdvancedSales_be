@@ -10,7 +10,9 @@ const producytSchema = new Schema({
   entry_date: { type: Date, default: Date.now },
   lote: { type: String, require: true },
   store: { type: String, require: true },
-
+  dueDateRequired: { type: Boolean, require: true },
+  due_date: { type: String, require: true },
+  id_manager: { type: String, require: true },
 });
 
 module.exports = mongoose.model("InventaryManagement", producytSchema);

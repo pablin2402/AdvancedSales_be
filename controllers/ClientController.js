@@ -1,9 +1,10 @@
 const Client = require("../models/Client");
+const User = require("../models/User");
+const Message = require("../models/Message");
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-
 
 const postNewAccount = (req, res) => {
   try {
@@ -25,7 +26,6 @@ const postNewAccount = (req, res) => {
     myConsole.log(e);
   }
 };
-
 const getUser = async (req, res) =>{
     try {
         const usuarioDB = await Client.findOne({email: req.body.email});
@@ -55,8 +55,72 @@ const getUser = async (req, res) =>{
           error
         });
       }
-}
+};
+const getClients = async (req, res) => {
+  const clientList = await User.find({id_owner:String(req.body.id_owner),status:"SHOW"});
+  res.json(clientList);
+};
+const getClientsArchived = async (req, res) => {
+  const clientList = await User.find({id_owner:String(req.body.id_owner),status:"ARCHIVED"});
+  res.json(clientList);
+};
+const getClientInfoById = async (req, res) => {
+  const clientList = await User.find({id_user:String(req.body.id_user)});
+  res.json(clientList);
+};
+const postClient = (req, res) => { 
+  try {
+   const clients = new User({
+      name: req.body.name,
+      lastName: req.body.lastName,
+      profilePicture: req.body.profilePicture,
+      icon: req.body.icon, 
+      directionId: req.body.directionId,
+      number: req.body.number, 
+      company: req.body.company,
+      email: req.body.email,
+      socialNetwork: req.body.socialNetwork,
+      notes: req.body.notes,
+      id_user: req.body.id_user,
+      id_owner: req.body.id_owner,
+      status: "ARCHIVED"
 
+    });
+    console.log(req.body);
+    clients.save((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      res.send({ message: "User was registered successfully!" });
+    });
+  } catch (e) {
+    myConsole.log(e);
+  }
+};
+const updateUserStatus = async (req, res) => {
+  const { id_user, status } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { id_user },
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User status updated successfully', user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update user status', error });
+  }
+};
+const getMessagesById = async (req, res) => {
+  const clientList = await Message.find({id_message:String(req.body.id_message),});
+  res.json(clientList);
+};
 module.exports = {
-  postNewAccount, getUser
+  postNewAccount, getUser, getClients, getClientsArchived,getMessagesById, getClientInfoById, postClient, updateUserStatus
 };

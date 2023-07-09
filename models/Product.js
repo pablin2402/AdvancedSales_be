@@ -10,6 +10,7 @@ const producytSchema = new Schema({
   description: { type: String, require: true },
   inventory: { type: Schema.ObjectId, ref:"Inventory" },
   id_user: { type: String, require: true },
+  creationDate: { type: Date, default: Date.now },
 
 });
 

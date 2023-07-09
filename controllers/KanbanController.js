@@ -48,8 +48,6 @@ const postKanbanByKanbanId = async (req, res) => {
       kanban.tasks.push(req.body.tasks);
       const updatedKanban = await kanban.save();
       res.json(updatedKanban);
-    } else {
-      res.status(404).json({ error: 'Kanban not found' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });

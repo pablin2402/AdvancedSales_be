@@ -8,7 +8,8 @@ const messageSchema = new Schema({
   number:{type: Number, require: true}, 
   id_client: { type: String, require: true },
   id_message:{ type: String, require: true },
-
+  message_type: { type: String, require: true },
+  from:{ type: String, require: true },
 });
 
 module.exports = mongoose.model("Message", messageSchema);

@@ -24,7 +24,6 @@ app.use(bodyparser.json());
 app.use(express.json());
 app.use(cors());
 
-//ROUTES
 app.use("/whatsapp", apiRoute);
 app.use("/whatsapp", inventaryRoute);
 app.use("/whatsapp", userRoute);

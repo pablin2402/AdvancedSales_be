@@ -33,14 +33,12 @@ const getInventaryByProductId = async (req, res) =>{
 
 const updateQuantity = async (req, res) => {
   try {
-    console.log(req.body.productId);
-    console.log(req.body.quantity);
-
-    const updatedInventory = await Inventory.findOneAndUpdate(
+    const updatedProduct = await Inventory.findOneAndUpdate(
       { _id: req.body.productId },
       { quantity: req.body.quantity },
       { new: true }
     );
+    return res.status(200).json(updatedProduct);
   } catch (error) {
     console.error('Error al actualizar la cantidad del inventario:', error);
   }
