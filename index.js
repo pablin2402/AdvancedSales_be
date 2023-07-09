@@ -29,6 +29,6 @@ app.use("/whatsapp", inventaryRoute);
 app.use("/whatsapp", userRoute);
 app.use("/whatsapp", kanbanRoute);
 
-app.listen(app.get('Port'), () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log(`server on port 1337 `);
   });
