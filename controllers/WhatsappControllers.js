@@ -5,7 +5,6 @@ const samples = require("../shared/sampleModels");
 const processMessage = require("../shared/processMessage");
 const whatsappModel = require("../shared/whatsappmodels");
 const Message = require("../models/Message");
-const User = require("../models/User");
 
 const VerifyToken = (req, res) => {
   try {
