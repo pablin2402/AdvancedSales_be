@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer')
 const {google} = require ('googleapis')
 const axios = require("axios");
-const { Buffer } = require('buffer');
+//const { Buffer } = require('buffer');
 const MailParser = require('mailparser').MailParser;
 var base64 = require('js-base64').Base64;
 
@@ -257,12 +257,12 @@ async function getUser(req, res) {
         }
         return null;
       }
-      
+      /*
       function decodeBase64Url(base64Url) {
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const decodedData = Buffer.from(base64, 'base64').toString('utf-8');
+        //const decodedData = Buffer.from(base64, 'base64').toString('utf-8');
         return decodedData;
-      }
+      }*/
 
 module.exports = {
   getUser,
