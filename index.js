@@ -5,7 +5,7 @@ const apiRoute = require("./routes/routes");
 const inventaryRoute = require("./routes/inventary.route");
 const userRoute = require("./routes/client.route");
 const kanbanRoute = require("./routes/kanban.route");
-
+const pdfController = require("./controllers/pdfController")
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -24,6 +24,7 @@ app.use(bodyparser.json());
 app.use(express.json());
 app.use(cors());
 
+app.use("/whatsapp", pdfController);
 app.use("/whatsapp", apiRoute);
 app.use("/whatsapp", inventaryRoute);
 app.use("/whatsapp", userRoute);

@@ -48,18 +48,22 @@ const getList = async (req, res) => {
   const Messages = await Message.find();
   res.json(Messages);
 };
+const SendMessageTemplate = (req, res) => {
+  var data = whatsappService.getTemplatedMessageInput(59169501045, req.body.listOfProducts, req.body.listOfProducts.qty);
+  whatsappService.SendMessageWhatsApp(data);
+};
 const SendMessage = (req, res) => {
-  var model = whatsappModel.MessageText(
-    "comooooo0++" + req.body.fullMessage,
-    59169501045
-  );
-  whatsappService.SendMessageWhatsApp(model);
-  /*var model = whatsappModel.MessageText(
-    "comooooo0++" + req.body.fullMessage,
-    59169501045
-  );*/
-    //whatsappService.SendMessageWhatsApp(model);
-/*
+
+  if(req.body.message_type === "message"){
+    var model = whatsappModel.MessageText(
+      req.body.fullMessage,
+      req.body.recipientNumber
+    );
+    whatsappService.SendMessageWhatsApp(model);
+    saveMessage(req);
+  }
+}
+function saveMessage(req, res) {
   try {
     const message = new Message({
       fullMessage: req.body.fullMessage,
@@ -67,7 +71,7 @@ const SendMessage = (req, res) => {
       type: req.body.type,
       number: req.body.number,
       id_client: req.body.id_client,
-      id_message:req.body.id_message,
+      id_message: req.body.id_message,
       message_type: req.body.message_type,
       from: req.body.from
     });
@@ -79,8 +83,9 @@ const SendMessage = (req, res) => {
     });
   } catch (e) {
     myConsole.log(e);
-  }*/
-};
+  }
+}
+
 function GetTextUser(messages) {
   var text = "";
   var typeMessge = messages["type"];
@@ -108,5 +113,5 @@ module.exports = {
   ReceivedMessage,
   SendMessage,
   getList,
-  
+  SendMessageTemplate
 };

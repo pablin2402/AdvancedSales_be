@@ -16,6 +16,9 @@ router
 .get("/", whatsAppController.VerifyToken)
 .post("/", whatsAppController.ReceivedMessage)
 .post("/message", whatsAppController.SendMessage)
+.post("/product/list", whatsAppController.SendMessageTemplate)
+
+
 .get("/messagesList", verificarAuth ,whatsAppController.getList)
 .post("/product/id", productController.getProductsById)
 .post("/product", productController.postProduct)

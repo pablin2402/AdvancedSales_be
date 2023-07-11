@@ -46,13 +46,13 @@ function SampleVideo(number){
     return data;
 }
 
-function SampleDocument(number){
+function SampleDocument(number, pdf){
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
         "to": number,
         "type": "document",  
         "document": {
-            "link": "https://icseindia.org/document/sample.pdf"
+            "link": pdf
         }        
     });
     return data;

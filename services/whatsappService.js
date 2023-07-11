@@ -8,7 +8,7 @@ function SendMessageWhatsApp(data){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer EAAMaY0K534YBAGghEaOwEW8ab7Mc3YErZCqTiTlmR1vZAGOMkkU6tvULq6308cZAuEZBE2ZBi5CQEfYGRazoqnYsJJiVH6kMNuQsnaNXuDCnCTrOZChEeOIcR2O3wqFrJHuRFZAaLwhJoaFlEudyJltZB4BAYKudIhkHxVLTEwG9QOuk4N7awj3AZCyARTLaQZAFyLpfWvM2ZAGygZDZD"
+            Authorization: "Bearer EAAMaY0K534YBAEr6rhx89uT1ysIQaYHG4z3SZAHsVSRWbuStfjdyYCcWgiTBcuV9mGWyq18RcSRLi9Q0E220mWqB1bpktCkzqhZC8hJfh8ZBPwZAWaxwbehzjGuHMOqClfZAi8E7aB5yab1NhcpZC8cMxRaX8UODXlIBhWDoeqyfs1daKs3EjJEJx1PImRiH5OzujDkDunVwZDZD"
         }
     };
     const req = https.request(options, res => {
@@ -24,6 +24,56 @@ function SendMessageWhatsApp(data){
     req.write(data);
     req.end();
 }
+function getTemplatedMessageInput(recipient, movie, seats) {
+    const data = JSON.stringify({
+      "messaging_product": "whatsapp",
+      "to": recipient,
+      "type": "template",
+      "template": {
+        "name": "sample_movie_ticket_confirmation",
+        "language": {
+          "code": "en_US"
+        },
+        "components": [
+          {
+            "type": "header",
+            "parameters": [
+              {
+                "type": "image",
+                "image": {
+                  "link": movie.productImage
+                }
+              }
+            ]
+          },
+          {
+            "type": "body",
+            "parameters": [
+              {
+                "type": "text",
+                "text": movie.productName
+              },
+              {
+                "type": "text",
+                "text": movie.productName
+              },
+              {
+                "type": "text",
+                "text": price.priceId.price
+              },
+              {
+                "type": "text",
+                "text": seats
+              }
+            ]
+          }
+        ]
+      }
+    }
+    );
+    return data;
+
+  }
 module.exports = {
-    SendMessageWhatsApp
+    SendMessageWhatsApp, getTemplatedMessageInput
 };
