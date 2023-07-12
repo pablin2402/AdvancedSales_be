@@ -10,6 +10,7 @@ const messageSchema = new Schema({
   id_message:{ type: String, require: true },
   message_type: { type: String, require: true },
   from:{ type: String, require: true },
+  link:{ type: String, require: true },
 });
 
 module.exports = mongoose.model("Message", messageSchema);

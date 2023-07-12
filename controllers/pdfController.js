@@ -26,24 +26,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post("/upload-pdf", upload.single("Pdf"), async (req, res) => {
-    console.log(req)
   if (!req.file) {
     return res.status(400).json({ error: 'No se ha proporcionado ningún archivo PDF' });
   }
-  
-  // Crear un nuevo documento PDF en la base de datosx
-  const newPdf = new Pdf({
+    const newPdf = new Pdf({
     name: req.file.originalname,
     path: req.file.path,
   });
 
   try {
-    // Guardar el documento PDF en la base de datos
     const savedPdf = await newPdf.save();
-    
-    // Construir la URL del archivo PDF
-    const pdfUrl = `https://tu-servidor.com/uploads/${savedPdf._id}`;
-    
+    const pdfUrl = `https://server-whatsapp-web-8c0cabbb8062.herokuapp.com/whatsapp/uploads/${savedPdf._id}`;    
     res.status(200).json({ message: 'PDF subido correctamente', pdfUrl });
   } catch (error) {
     res.status(500).json({ error: 'Error al guardar el PDF en la base de datos' });

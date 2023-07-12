@@ -61,6 +61,14 @@ const SendMessage = (req, res) => {
     );
     whatsappService.SendMessageWhatsApp(model);
     saveMessage(req);
+  }else if (req.body.message_type === "document"){
+    console.log("HOLAAAAAA")
+    var model = whatsappModel.SampleDocument(
+      req.body.recipientNumber,
+      req.body.link
+    );
+    whatsappService.SendMessageWhatsApp(model);
+    saveMessage(req);
   }
 }
 function saveMessage(req, res) {
@@ -73,7 +81,8 @@ function saveMessage(req, res) {
       id_client: req.body.id_client,
       id_message: req.body.id_message,
       message_type: req.body.message_type,
-      from: req.body.from
+      from: req.body.from,
+      link : req.body.link
     });
     message.save((err, user) => {
       if (err) {

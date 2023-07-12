@@ -10,7 +10,17 @@ function MessageText(textResponse, number){
     });
     return data;
 }
-
+function SampleDocument(number, pdf){
+    const data = JSON.stringify({
+        "messaging_product": "whatsapp",
+        "to": number,
+        "type": "document",  
+        "document": {
+            "link": pdf
+        }        
+    });
+    return data;
+}
 function MessageList(number){
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
@@ -117,5 +127,6 @@ module.exports = {
 MessageText,
 MessageList,
 MessageComprar,
-MessageLocation
+MessageLocation,
+SampleDocument
 };
