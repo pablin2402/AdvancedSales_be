@@ -35,6 +35,7 @@ async function processDocument(doc, textUser, number, models, dbData) {
     console.log(inputMessages, targetMessage)
 
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
+        console.log(textUser.includes(keyword))
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
 
