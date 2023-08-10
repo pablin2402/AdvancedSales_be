@@ -33,6 +33,7 @@ const ReceivedMessage = (req, res) => {
       var messages = messageObject[0];
       var number = messages["from"];
       var text = GetTextUser(messages);
+      myConsole.log(text)
       whatsappService.SendMessageWhatsApp(number, "El usuario dijo:" + text);
       if (text != "") 
       {
@@ -62,7 +63,6 @@ const SendMessage = (req, res) => {
     whatsappService.SendMessageWhatsApp1(model);
     saveMessage(req);
   }else if (req.body.message_type === "document"){
-    console.log(req.body.link)
     var model = whatsappModel.SampleDocument(
       req.body.recipientNumber,
       req.body.link
@@ -71,8 +71,8 @@ const SendMessage = (req, res) => {
       req.body.fullMessage,
       req.body.recipientNumber
     );
-    whatsappService.SendMessageWhatsApp(model);
-    whatsappService.SendMessageWhatsApp(model2);
+    whatsappService.SendMessageWhatsApp1(model);
+    whatsappService.SendMessageWhatsApp1(model2);
 
     saveMessage(req);
   }else if (req.body.message_type === "image"){
@@ -86,8 +86,8 @@ const SendMessage = (req, res) => {
       req.body.fullMessage,
       req.body.recipientNumber
     );
-    whatsappService.SendMessageWhatsApp(model);
-    whatsappService.SendMessageWhatsApp(model2);
+    whatsappService.SendMessageWhatsApp1(model);
+    whatsappService.SendMessageWhatsApp1(model2);
     saveMessage(req);
   }
 }
