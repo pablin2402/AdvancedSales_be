@@ -6,17 +6,22 @@ const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
 
-async function Process(textUser, number, idClient) {
+async function Process(textUser, number){
     textUser = textUser.toLowerCase();
     var models = [];
 
     try {
-        const dbData = await getListOfTextProcess(idClient);
-
+        const dbData = await getListOfTextProcess("CL-01");
+        console.log(dbData)
         dbData.forEach(doc => {
             processDocument(doc, textUser, number, models, dbData);
         });
-        models.push(model);
+
+        if (models.length === 0) {
+            var model = whatsappModel.MessageText("No entiendo lo que dices", number);
+            models.push(model);
+        }
+
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
@@ -24,7 +29,6 @@ async function Process(textUser, number, idClient) {
         console.error("Error fetching data from the database:", error);
     }
 }
-
 async function processDocument(doc, textUser, number, models, dbData) {
     const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
