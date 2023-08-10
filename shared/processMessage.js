@@ -6,15 +6,15 @@ const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
 
-async function Process(textUser, number){
+async function Process(textUser, number, idClient) {
     textUser = textUser.toLowerCase();
     var models = [];
 
     try {
-        const dbData = await getListOfTextProcess("CL-01");
-        console.log(dbData)
+        const dbData = await getListOfTextProcess(idClient);
+
         dbData.forEach(doc => {
-            processDocument(doc, textUser, number, models);
+            processDocument(doc, textUser, number, models, dbData);
         });
 
         if (models.length === 0) {
@@ -29,13 +29,16 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-function processDocument(doc, textUser, number, models) {
+
+async function processDocument(doc, textUser, number, models, dbData) {
     const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
     console.log(inputMessages, targetMessage)
+
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
+
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
@@ -43,10 +46,12 @@ function processDocument(doc, textUser, number, models) {
     }
 
     doc.children.forEach(childDoc => {
-        processDocument(childDoc, textUser, number, models);
+        const childDocument = dbData.find(item => item._id === childDoc.targetId);
+        if (childDocument) {
+            processDocument(childDocument, textUser, number, models, dbData);
+        }
     });
 }
-
 module.exports = {
     Process
 };
