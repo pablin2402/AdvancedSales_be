@@ -40,8 +40,29 @@ const getPriceByProductId = async (req, res) =>{
   const price = await Price.find({productId:String(req.body.productId),});
   res.json(price);
 }
+const uploadPriceProduct = async (req, res) => {
+  const { productId,price, offerPrice, merchandiseCost, revenue, marginGain, disscount } = req.body;
+  
+    try {
+      const product = await Price.findOneAndUpdate(
+        { productId: productId },
+        { price: price, offerPrice: offerPrice, merchandiseCost: merchandiseCost, revenue: revenue, marginGain: marginGain, disscount: disscount },
+        { new: true }
+      );
+  
+      if (!product) {
+        return res.status(404).json({ error: 'No se encontró el product con los parámetros proporcionados' });
+      }
+  
+      return res.json({ product });
+    } catch (error) {
+      console.error('Error al actualizar el estado:', error);
+      res.status(500).json({ error: 'Error al actualizar el estadoxx' });
+    }
+}
 module.exports = {
     getListOfPrice,
     postPrice,
     getPriceByProductId,
+    uploadPriceProduct
 };

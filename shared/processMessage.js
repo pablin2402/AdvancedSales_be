@@ -6,24 +6,20 @@ function Process(textUser, number){
     var models = [];
 
     if(textUser.includes("hola")){
-        //SALUDAR A TODOS ES LO MEJOR QUE HAGO 
         var model = whatsappModel.MessageText("Hola, un gusto saludarte. 👋", number);
         models.push(model);
         var modelList = whatsappModel.MessageList(number);
         models.push(modelList);
     }
     else if(textUser.includes("gracias")){
-        // agradecimiento
         var model = whatsappModel.MessageText("Gracias a ti por escribirme. 😉😎", number);
         models.push(model);       
-
     }
     else if(textUser.includes("adios") ||
     textUser.includes("adiós")||
     textUser.includes("bye")||
     textUser.includes("me voy")
     ){
-        // despedir
         var model = whatsappModel.MessageText("Ve con cuidado. 😊", number);
         models.push(model);
     }

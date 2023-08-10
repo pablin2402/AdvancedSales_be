@@ -6,11 +6,14 @@ const producytSchema = new Schema({
   categoryId: { type: Schema.ObjectId, ref: "Category" },
   priceId: { type: Schema.ObjectId, ref:"Price" },
   productImage: { type: String, require: true },
-  quantity: { type: Number, require: true },
+  qty: { type: Number, require: true },
   description: { type: String, require: true },
   inventory: { type: Schema.ObjectId, ref:"Inventory" },
   id_user: { type: String, require: true },
   creationDate: { type: Date, default: Date.now },
+  brand: { type: String, require: true },
+  productId: { type: String, require: true },
+  status: { type: Boolean, require: true },
 
 });
 

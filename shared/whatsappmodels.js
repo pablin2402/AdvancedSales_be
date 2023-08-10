@@ -11,16 +11,30 @@ function MessageText(textResponse, number){
     return data;
 }
 function SampleDocument(number, pdf){
+    const pdfUrl = pdf.replace(/\/file\/d\/(.*)\/.*$/, "/uc?export=download&id=$1");
+
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
         "to": number,
         "type": "document",  
         "document": {
-            "link": pdf
+            "link": pdfUrl
         }        
     });
     return data;
 }
+function SampleImage(number,image){
+    const data = JSON.stringify({
+        "messaging_product": "whatsapp",
+        "to": number,
+        "type": "image",  
+        "image": {
+            "link": image
+        }        
+    });
+    return data;
+}
+
 function MessageList(number){
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
@@ -128,5 +142,6 @@ MessageText,
 MessageList,
 MessageComprar,
 MessageLocation,
-SampleDocument
+SampleDocument,
+SampleImage
 };

@@ -21,7 +21,8 @@ const postKanban = (req, res) => {
       title: req.body.title,
       id_owner: req.body.id_owner,
       tasks: req.body.tasks,
-      id_kanban: req.body.id_kanban
+      id_kanban: req.body.id_kanban,
+      color: req.body.color,
     });
     kanban.save((err,kanban) => {
       if (err) {
@@ -33,7 +34,8 @@ const postKanban = (req, res) => {
         id_owner: kanban.id_owner,
         tasks: kanban.tasks,
         id_kanban: kanban.id_kanban,
-        creationDate: kanban.creationDate
+        creationDate: kanban.creationDate,
+        color: kanban.color
       });
     });
   } catch (e) {
@@ -42,12 +44,23 @@ const postKanban = (req, res) => {
 };
 const postKanbanByKanbanId = async (req, res) => {
   try {
-    const kanban = await Kanban.findOne({ id_kanban: req.body.id_kanban });
-
+    const kanban = await Kanban.findOne({ id_kanban: String(req.body.id_kanban) });
     if (kanban) {
       kanban.tasks.push(req.body.tasks);
-      const updatedKanban = await kanban.save();
-      res.json(updatedKanban);
+      await kanban.save((err,kanban) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        res.status(200).send({
+          title: kanban.title,
+          id_owner: kanban.id_owner,
+          tasks: kanban.tasks,
+          id_kanban: kanban.id_kanban,
+          creationDate: kanban.creationDate,
+          color: kanban.color
+        });
+      });
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -71,22 +84,26 @@ const updateKanban = async (req, res) => {
         res.json(update)
    }     
 };
-const deleteKanban = async (req, res) => {    
-  const kanban =  await Kanban.find({id_kanban: req.body.id_kanban});
-  if(kanban){
-    const update = await Kanban.updateOne(
-      { id_kanban: req.body.id_kanban },
-      { $pull: {tasks: { id_client: req.body.id_client }}}
-    );
-    res.json(update)
-  }     
-};
 const findIdKanbanByClient = async (req, res) => {
   try {
     const kanban = await Kanban.findOne({ "tasks.id_user": req.body.id_user });
     res.json(kanban);
   } catch (error) {
     res.status(500).json({ error: "Error al buscar el ID de Kanban por cliente" });
+  }
+};
+const deleteKanban = async (req, res) => {
+  const idKanban= req.body.id_kanban;
+  
+  try {
+    const deletedKanban = await Kanban.deleteOne({ id_kanban: idKanban });
+    console.log(deleteKanban)
+    if (!deletedKanban) {
+      return res.status(404).json({ message: "No se encontró el kanban con los parámetros dados." });
+    }
+    return res.status(200).json({ message: 'Kanban eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el kanban" });
   }
 };
 

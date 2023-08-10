@@ -14,27 +14,36 @@ const postInventary = (req, res) => {
     dueDate:  req.body.dueDate,
     dueDateRequired:  req.body.dueDateRequired,
     store: req.body.store,
-    id: req.body._id
     });
-    inventory.save((err) => {
+    inventory.save((err, inventory) => {
       if (err) {
         res.status(500).send({ message: err });
         return;
       }
+      res.status(200).send({
+        productId: inventory.productId,
+        userId: inventory.userId,
+        quantity:  inventory.quantity,
+        dueDate:  inventory.dueDate,
+        dueDateRequired:  inventory.dueDateRequired,
+        store: inventory.store,
+        id: inventory._id
+      });
     });
   } catch (e) {
-    myConsole.log(e);
+     console.log(e);
   }
 };
 const getInventaryByProductId = async (req, res) =>{
-  const inventary = await Inventary.find({productId:String(req.body.productId),});
+  const inventary = await Inventory.findOne({productId:String(req.body.productId),});
   res.json(inventary);
 }
 
 const updateQuantity = async (req, res) => {
+  console.log(req.body)
   try {
     const updatedProduct = await Inventory.findOneAndUpdate(
-      { _id: req.body.productId },
+      { productId: req.body.productId },
       { quantity: req.body.quantity },
       { new: true }
     );

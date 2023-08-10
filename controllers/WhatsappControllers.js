@@ -62,12 +62,32 @@ const SendMessage = (req, res) => {
     whatsappService.SendMessageWhatsApp(model);
     saveMessage(req);
   }else if (req.body.message_type === "document"){
-    console.log("HOLAAAAAA")
+    console.log(req.body.link)
     var model = whatsappModel.SampleDocument(
       req.body.recipientNumber,
       req.body.link
     );
+    var model2 = whatsappModel.MessageText(
+      req.body.fullMessage,
+      req.body.recipientNumber
+    );
     whatsappService.SendMessageWhatsApp(model);
+    whatsappService.SendMessageWhatsApp(model2);
+
+    saveMessage(req);
+  }else if (req.body.message_type === "image"){
+    console.log(req.body.link)
+    console.log("HOLO")
+    var model = whatsappModel.SampleImage(
+      req.body.recipientNumber,
+      req.body.link
+    );
+    var model2 = whatsappModel.MessageText(
+      req.body.fullMessage,
+      req.body.recipientNumber
+    );
+    whatsappService.SendMessageWhatsApp(model);
+    whatsappService.SendMessageWhatsApp(model2);
     saveMessage(req);
   }
 }

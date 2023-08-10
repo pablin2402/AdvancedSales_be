@@ -10,8 +10,6 @@ const inventory = new Schema({
   dueDate: { type: Date, require: false },
   dueDateRequired: { type: Boolean, require: true },
   store: { type: String, require: true },
-  _id:  { type: ObjectId, require: true },
-
 });
 
 module.exports = mongoose.model("Inventory", inventory);

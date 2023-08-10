@@ -6,15 +6,12 @@ const getListOfInventaryManagement = async (req, res) => {
 };
 const deleteInventaryManagement = async (req, res) => {
     const inventoryManagementId = req.body.id;
-    console.log("caca"+req.body.id)
     const deletedInventoryManagement = await InventaryManagement.deleteOne({ _id: inventoryManagementId });
 
     if (deletedInventoryManagement.deletedCount === 0) {
       return res.status(404).json({ error: 'Inventario de gestión no encontrado' });
     }
-
     return res.status(200).json({ message: 'Inventario de gestión eliminado correctamente' });
-  
 };
 const generateUniqueID = (param1, param2) => {
   const currentDate = new Date();
@@ -43,16 +40,17 @@ const postInventaryManagement = (req, res) => {
         res.status(500).send({ message: err });
         return;
       }
-      res.status(200).send({
-        id_manager: inventory.id_manager,
+      res.status(200, 204).send({
         quantity: inventory.quantity,
         product_id: inventory.product_id,
         inventory: inventory.inventory,
         id_user: inventory.id_user,
+        entry_date: inventory.entry_date,
         lote: inventory.lote,
         store: inventory.store,
         dueDateRequired: inventory.dueDateRequired,
-        due_date: inventory.due_date
+        due_date: inventory.due_date,
+        id_manager: inventory.id_manager
       });
     });
   } catch (e) {

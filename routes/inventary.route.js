@@ -9,6 +9,7 @@ router
 .post("/inventory", inventoryController.postInventary)
 .delete("/inventoryManagement/id", inventaryManagementController.deleteInventaryManagement)
 .put("/inventory/id", inventoryController.updateQuantity)
+.post("/inventory/id", inventoryController.getInventaryByProductId)
 .post("/inventoryManagement/userid", inventaryManagementController.getListOfInventaryManagement)
 .post("/inventoryManagement/id", inventaryManagementController.postInventaryManagement)
 

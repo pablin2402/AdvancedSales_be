@@ -6,6 +6,8 @@ const kanbanSchema = new Schema({
   id_user: {type: String, require: true},
   tasks: { type : Array , "default" : [] },
   id_kanban: {type: String, require: true},
+  id_owner: {type: String, require: true},
+  color: {type: String, require: true},
 });
 
 module.exports = mongoose.model("Kanban", kanbanSchema);

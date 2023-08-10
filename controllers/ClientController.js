@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+
+
 const postNewAccount = (req, res) => {
   try {
    const client = new Client({
@@ -68,6 +70,32 @@ const getClientInfoById = async (req, res) => {
   const clientList = await User.find({id_user:String(req.body.id_user)});
   res.json(clientList);
 };
+const updateUserFile = async (req, res) => {
+  const { id_user, name, lastName, number, company, email, directionId  } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { id_user },
+      { 
+        name: name,
+        lastName: lastName,
+        number: number,
+        company: company,
+        email: email,
+        directionId: directionId        
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User status updated successfully', user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update user status', error });
+  }
+};
 const postClient = (req, res) => { 
   try {
    const clients = new User({
@@ -121,6 +149,15 @@ const getMessagesById = async (req, res) => {
   const clientList = await Message.find({id_message:String(req.body.id_message),});
   res.json(clientList);
 };
+const deleteClient = async (req, res) => {
+  const userId = req.body.id_user;
+  const deleteProduct = await User.deleteOne({ id_user: userId });
+
+  if (deleteProduct.deletedCount === 0) {
+    return res.status(404).json({ error: 'Cliente no encontrado' });
+  }
+  return res.status(200).json({ message: 'Cliente eliminado correctamente' });
+};
 module.exports = {
-  postNewAccount, getUser, getClients, getClientsArchived,getMessagesById, getClientInfoById, postClient, updateUserStatus
+  postNewAccount, getUser, getClients, getClientsArchived,getMessagesById, getClientInfoById, postClient, updateUserFile,updateUserStatus, deleteClient
 };
