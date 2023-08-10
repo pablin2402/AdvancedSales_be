@@ -16,12 +16,7 @@ async function Process(textUser, number, idClient) {
         dbData.forEach(doc => {
             processDocument(doc, textUser, number, models, dbData);
         });
-
-        if (models.length === 0) {
-            var model = whatsappModel.MessageText("No entiendo lo que dices", number);
-            models.push(model);
-        }
-
+        models.push(model);
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
