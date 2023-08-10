@@ -113,7 +113,6 @@ function saveMessage(req, res) {
     myConsole.log(e);
   }
 }
-
 function GetTextUser(messages) {
   var text = "";
   var typeMessge = messages["type"];
