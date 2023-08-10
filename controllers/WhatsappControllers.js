@@ -34,14 +34,14 @@ const ReceivedMessage = (req, res) => {
       var number = messages["from"];
       var text = GetTextUser(messages);
       myConsole.log(text)
-      whatsappService.SendMessageWhatsApp(number, "El usuario dijo:" + text);
+      //whatsappService.SendMessageWhatsApp(number, "El usuario dijo:" + text);
       if (text != "") 
       {
         processMessage.Process(text, number);
       }
       res.send("Recibo mensaje :V");
     }
-  } catch (e) {
+  } catch (e) { 
     res.send("EVENT_RECEIVED");
   }
 };
@@ -54,8 +54,9 @@ const SendMessageTemplate = (req, res) => {
   whatsappService.SendMessageWhatsApp1(data);
 };
 const SendMessage = (req, res) => {
-
   if(req.body.message_type === "message"){
+    console.log(    req.body.fullMessage,
+      req.body.recipientNumber)
     var model = whatsappModel.MessageText(
       req.body.fullMessage,
       req.body.recipientNumber
@@ -76,8 +77,6 @@ const SendMessage = (req, res) => {
 
     saveMessage(req);
   }else if (req.body.message_type === "image"){
-    console.log(req.body.link)
-    console.log("HOLO")
     var model = whatsappModel.SampleImage(
       req.body.recipientNumber,
       req.body.link
