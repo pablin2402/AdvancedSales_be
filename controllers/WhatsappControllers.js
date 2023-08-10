@@ -33,7 +33,7 @@ const ReceivedMessage = (req, res) => {
       var messages = messageObject[0];
       var number = messages["from"];
       var text = GetTextUser(messages);
-      whatsappService.SendMessageWhatsApp("El usuario dijo:" + text, number);
+      whatsappService.SendMessageWhatsApp(number, "El usuario dijo:" + text);
       if (text != "") 
       {
         processMessage.Process(text, number);
@@ -50,7 +50,7 @@ const getList = async (req, res) => {
 };
 const SendMessageTemplate = (req, res) => {
   var data = whatsappService.getTemplatedMessageInput(59169501045, req.body.listOfProducts, req.body.listOfProducts.qty);
-  whatsappService.SendMessageWhatsApp(data);
+  whatsappService.SendMessageWhatsApp1(data);
 };
 const SendMessage = (req, res) => {
 
@@ -59,7 +59,7 @@ const SendMessage = (req, res) => {
       req.body.fullMessage,
       req.body.recipientNumber
     );
-    whatsappService.SendMessageWhatsApp(model);
+    whatsappService.SendMessageWhatsApp1(model);
     saveMessage(req);
   }else if (req.body.message_type === "document"){
     console.log(req.body.link)
