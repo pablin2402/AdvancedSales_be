@@ -12,7 +12,6 @@ async function Process(textUser, number){
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        myConsole.log(dbData)
         console.log(dbData)
         dbData.forEach(doc => {
             processDocument(doc, textUser, number, models);
@@ -33,7 +32,6 @@ async function Process(textUser, number){
 function processDocument(doc, textUser, number, models) {
     const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
-    myConsole.log(inputMessages, targetMessage)
     console.log(inputMessages, targetMessage)
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
