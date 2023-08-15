@@ -12,7 +12,7 @@ async function Process(textUser, number){
     try {
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
-            processDocument(doc, textUser, number, models, dbData);
+            processDocument(doc, textUser, number, models, dbData, []);
         });
         if (models.length === 0) {
             var model = whatsappModel.MessageText("No entiendo lo que dices", number);
@@ -25,7 +25,8 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-async function processDocument(doc, textUser, number, models, dbData) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages) {
+
     const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
@@ -48,7 +49,9 @@ async function processDocument(doc, textUser, number, models, dbData) {
         
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
-            processDocument(childDocument.children, textUser, number, models, dbData);
+            const combinedInputMessages = inputMessages.concat(childDoc.inputMessage);
+            console.log(combinedInputMessages)
+            processDocument(childDocument, textUser, number, models, dbData, combinedInputMessages);
         }
     });
 }
