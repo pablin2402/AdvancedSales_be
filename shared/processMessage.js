@@ -38,10 +38,11 @@ async function processDocument(doc, textUser, number, models, dbData) {
     }
 
     doc.children.forEach(childDoc => {
-        console.log(childDoc)
-        console.log("+_)(*&^%_)(*&^&*()")
-        console.log(dbData)
-        const childDocument = dbData.find(item => item.targetId === childDoc.targetId);
+        console.log(childDoc);
+        console.log("+_)(*&^%_)(*&^&*()");
+        console.log(dbData);
+        
+        const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument) {
             processDocument(childDocument, textUser, number, models, dbData);
         }
