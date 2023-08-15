@@ -31,15 +31,9 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData) {
     const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
-    console.log(inputMessages)
-    console.log("++++++++++++++++++++++++++++++++++++++++++++")
-    console.log(targetMessage)
-    console.log(textUser)
-    console.log(inputMessages.some(keyword => textUser.includes(keyword)))
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
-
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
