@@ -11,16 +11,13 @@ async function Process(textUser, number){
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        console.log(dbData)
         dbData.forEach(doc => {
             processDocument(doc, textUser, number, models, dbData);
         });
-
         if (models.length === 0) {
             var model = whatsappModel.MessageText("No entiendo lo que dices", number);
             models.push(model);
         }
-
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
@@ -41,6 +38,7 @@ async function processDocument(doc, textUser, number, models, dbData) {
     }
 
     doc.children.forEach(childDoc => {
+        console.log(childDoc)
         const childDocument = dbData.find(item => item.targetId === childDoc.targetId);
         console.log("+_)(*&^%_)(*&^&*()")
         console.log(childDocument)
