@@ -43,8 +43,11 @@ async function processDocument(doc, textUser, number, models, dbData) {
         console.log(dbData);
         
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
+        console.log("---------------------------");
         console.log(childDocument)
-        if (!childDocument) {
+        
+        if (childDocument && !childDoc.processed) {
+            childDoc.processed = true; 
             processDocument(childDocument, textUser, number, models, dbData);
         }
     });
