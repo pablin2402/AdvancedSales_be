@@ -48,7 +48,7 @@ async function processDocument(doc, textUser, number, models, dbData) {
         
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
-            processDocument(childDocument, textUser, number, models, dbData);
+            processDocument(childDocument.children, textUser, number, models, dbData);
         }
     });
 }
