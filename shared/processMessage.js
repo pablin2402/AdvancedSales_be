@@ -39,8 +39,9 @@ async function processDocument(doc, textUser, number, models, dbData) {
 
     doc.children.forEach(childDoc => {
         console.log(childDoc)
-        const childDocument = childDoc.find(item => item.targetId === childDoc.targetId);
-        console.log(childDocument)
+        console.log("+_)(*&^%_)(*&^&*()")
+        console.log(dbData)
+        const childDocument = dbData.find(item => item.targetId === childDoc.targetId);
         if (childDocument) {
             processDocument(childDocument, textUser, number, models, dbData);
         }
