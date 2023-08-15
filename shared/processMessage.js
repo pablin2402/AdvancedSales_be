@@ -26,8 +26,6 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages) {
-
-    const inputMessages = doc.inputMessage;
     const targetMessage = doc.targetMessage;
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
