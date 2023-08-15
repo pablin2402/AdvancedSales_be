@@ -37,9 +37,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
 
     doc.children.forEach(childDoc => {
         console.log(childDoc);
-        console.log("+_)(*&^%_)(*&^&*()");
-        console.log(dbData);
-        
+        console.log("+_)(*&^%_)(*&^&*()");        
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         console.log("---------------------------");
         console.log(childDocument)
@@ -49,6 +47,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             const combinedInputMessages = inputMessages.concat(childDoc.inputMessage);
             const combinedTargetMessages = targetMessage.concat(childDoc.targetMessage);
             console.log(combinedInputMessages)
+            console.log(combinedTargetMessages)
             processDocument(childDocument, textUser, number, models, dbData, combinedInputMessages, combinedTargetMessages);
         }
     });
