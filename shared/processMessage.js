@@ -13,7 +13,9 @@ async function Process(textUser, number){
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage; 
-            processDocument(doc, textUser, number, models, dbData, inputMessages,[]);
+            const targetMessage = doc.targetMessage; 
+
+            processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
         });
         if (models.length === 0) {
             var model = whatsappModel.MessageText("No entiendo lo que dices", number);
