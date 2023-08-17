@@ -28,7 +28,8 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     //console.log(doc,")_(*&^%$#$%^&*" ,textUser, ")(*&^%$%^&*",number,"_)(*&^&*(" ,models,")(*&^%^&*(" ,inputMessages, ")(*&^&*()",targetMessage)
     if (inputMessages.some(keyword => textUser.includes(keyword))){
-        console.log("HOLAAAAAA", inputMessages.some(keyword => textUser.includes(keyword))) 
+        //console.log("HOLAAAAAA", inputMessages.some(keyword => textUser.includes(keyword))) 
+        console.log(targetMessage, number)
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
@@ -38,11 +39,11 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
 
     doc.children.forEach(childDoc => {
-        console.log(childDoc);
-        console.log("+_)(*&^%_)(*&^&*()");        
+        //console.log(childDoc);
+        //console.log("+_)(*&^%_)(*&^&*()");        
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
-        console.log("---------------------------");
-        console.log(childDocument)
+        //console.log("---------------------------");
+       // console.log(childDocument)
         
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
