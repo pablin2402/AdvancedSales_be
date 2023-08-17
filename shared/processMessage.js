@@ -13,9 +13,9 @@ async function Process(textUser, number){
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage; 
-            const targetMessage = doc.targetMessage;
-            const parent = doc.parent;
-            processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage, parent);
+            const targetMessage = doc.targetMessage; 
+            console.log(targetMessage)
+            processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
         });
         if (models.length === 0) {
             var model = whatsappModel.MessageText("No entiendo lo que dices", number);
@@ -28,12 +28,12 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages, parentChild) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages.join(' ');
-    
     console.log(targetMessage)
     console.log(inputMessages)
     console.log(textUser)
+    //inputmessagesm => {ubi, lugar},  textuser=> lugar
     if (inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage)) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
@@ -49,8 +49,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage;
             const childTargetMessages = [childDoc.targetMessage];
-            const parentChild = childDoc.parent
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages, parentChild);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
         }
     });
 }
