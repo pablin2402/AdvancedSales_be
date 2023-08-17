@@ -14,7 +14,7 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage; 
             const targetMessage = doc.targetMessage; 
-            console.log(targetMessage)
+
             processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
         });
         if (models.length === 0) {
@@ -29,7 +29,8 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
-    const targetMessage = targetMessages.join(' ');
+    const targetMessage = targetMessages;
+    //const targetMessage = targetMessages.join(' ');
     console.log(targetMessage)
     console.log(inputMessages)
     console.log(textUser)
