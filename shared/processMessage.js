@@ -37,6 +37,16 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
     }
 
+    if (!doc.processed && inputMessages.some(keyword => textUser.includes(keyword))) {
+        var model = whatsappModel.MessageText(targetMessage, number);
+        models.push(model);
+        if (doc.messageType === "image") {
+            var modelImage = whatsappModel.MessageImage(doc.link, number);
+            models.push(modelImage);
+        }
+        doc.processed = true;
+    }
+    
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
 
