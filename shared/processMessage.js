@@ -29,11 +29,7 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages, parentChild) {
-    let targetMessage='';
-    if(parentChild){
-        targetMessage = targetMessages
-    }
-    targetMessage = targetMessages.join(' ');
+    const targetMessage = targetMessages.join(' ');
     
     console.log(targetMessage)
     console.log(inputMessages)
