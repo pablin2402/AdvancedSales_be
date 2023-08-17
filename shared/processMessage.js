@@ -28,6 +28,7 @@ async function Process(textUser, number){
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages.join(' ');
+    console.log(targetMessage)
     console.log(inputMessages)
     console.log(textUser)
     //inputmessagesm => {ubi, lugar},  textuser=> lugar
@@ -46,7 +47,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage;
             const childTargetMessages = [childDoc.targetMessage];
-           // console.log(childInputMessages,childTargetMessages )
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
         }
     });
