@@ -27,18 +27,8 @@ async function Process(textUser, number){
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages.join(' ');
-
-    if (inputMessages.some(keyword => textUser.includes(keyword))) {
-        var model = whatsappModel.MessageText(targetMessage, number);
-        models.push(model);
-        if (doc.messageType === "image") {
-            var modelImage = whatsappModel.MessageImage(doc.link, number);
-            models.push(modelImage);
-        }
-    }
-
+    //inputmessagesm => {ubi, lugar},  textuser=> lugar
     if (!doc.processed && inputMessages.some(keyword => textUser.includes(keyword))) {
-        console.log(inputMessages, textUser)
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
@@ -46,6 +36,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             models.push(modelImage);
         }
         doc.processed = true;
+
     }
 
     doc.children.forEach(childDoc => {
