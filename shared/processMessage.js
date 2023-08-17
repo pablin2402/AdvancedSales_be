@@ -27,7 +27,7 @@ async function Process(textUser, number){
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     if (inputMessages.some(keyword => textUser.includes(keyword))){
-        console.log(targetMessage, number)
+        //console.log(targetMessage, number)
         const targetMessage1 = targetMessage.map(msg => msg.toString()).join(' ');
         var model = whatsappModel.MessageText(targetMessage1, number);
         models.push(model);
@@ -43,13 +43,12 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         //console.log("---------------------------");
        // console.log(childDocument)
-        
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const combinedInputMessages = inputMessages.concat(childDoc.inputMessage);
             const combinedTargetMessages = targetMessage.concat(childDoc.targetMessage);
-           // console.log(combinedInputMessages)// {locacion, lugar}
-           // console.log(combinedTargetMessages)// la ubicacion es la calle tantos tantos 
+            console.log(combinedInputMessages)// {locacion, lugar}
+            console.log(combinedTargetMessages)// la ubicacion es la calle tantos tantos 
             processDocument(childDocument, textUser, number, models, dbData, combinedInputMessages, combinedTargetMessages);
         }
     });
