@@ -30,7 +30,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     if (inputMessages.some(keyword => textUser.includes(keyword))){
         //console.log("HOLAAAAAA", inputMessages.some(keyword => textUser.includes(keyword))) 
         console.log(targetMessage, number)
-        var model = whatsappModel.MessageText(targetMessage, number);
+        const targetMessage1 = targetMessages.map(msg => msg.toString()).join(' '); // Convertir y unir los mensajes
+        var model = whatsappModel.MessageText(targetMessage1, number);
         models.push(model);
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
