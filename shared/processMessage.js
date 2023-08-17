@@ -1,6 +1,7 @@
 const whatsappModel = require("../shared/whatsappmodels");
 const whatsappService = require("../services/whatsappService");
 const TextProcess = require("../models/TextProcess");
+const natural = require('natural');
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -30,11 +31,9 @@ async function Process(textUser, number){
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages;
-    //const targetMessage = targetMessages.join(' ');
-    console.log(targetMessage) // saludos
-    console.log(inputMessages)//{hola, saludos, holi}
-    console.log(textUser)//mensaje enviado de wpp
-    if (inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage)) {
+    const inputSynonyms = natural.PorterStemmer.attach().findSynonyms(inputMessages[0], 10);
+
+    if (inputSynonyms.some(synonym => textUser.includes(synonym) || inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
