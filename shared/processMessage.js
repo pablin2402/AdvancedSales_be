@@ -38,6 +38,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
 
     if (!doc.processed && inputMessages.some(keyword => textUser.includes(keyword))) {
+        console.log(inputMessages, textUser)
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
@@ -46,7 +47,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
         doc.processed = true;
     }
-    
+
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
 
@@ -54,7 +55,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage;
             const childTargetMessages = [childDoc.targetMessage];
-            console.log(childInputMessages,childTargetMessages )
+           // console.log(childInputMessages,childTargetMessages )
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
         }
     });
