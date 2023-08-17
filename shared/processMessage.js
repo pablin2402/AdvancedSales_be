@@ -14,7 +14,7 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage; 
             const targetMessage = doc.targetMessage; 
-
+            console.log(targetMessage)
             processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
         });
         if (models.length === 0) {
