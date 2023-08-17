@@ -28,7 +28,7 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     //const targetMessage = targetMessages.join(' ');
     console.log(targetMessage)
     console.log(inputMessages)
