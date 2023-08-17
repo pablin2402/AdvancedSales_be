@@ -25,11 +25,11 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
-    if (inputMessages.some(keyword => textUser.includes(keyword))){
-        //console.log(targetMessage, number)
-        const targetMessage1 = targetMessage.map(msg => msg.toString()).join(' ');
-        var model = whatsappModel.MessageText(targetMessage1, number);
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
+    const targetMessage = targetMessages.join(' ');
+
+    if (inputMessages.some(keyword => textUser.includes(keyword))) {
+        var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
@@ -38,21 +38,18 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
 
     doc.children.forEach(childDoc => {
-        //console.log(childDoc);
-        //console.log("+_)(*&^%_)(*&^&*()");        
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
-        //console.log("---------------------------");
-       // console.log(childDocument)
+
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
-            const combinedInputMessages = inputMessages.concat(childDoc.inputMessage);
-            const combinedTargetMessages = targetMessage.concat(childDoc.targetMessage);
-            console.log(combinedInputMessages)// {locacion, lugar}
-            console.log(combinedTargetMessages)// la ubicacion es la calle tantos tantos 
-            processDocument(childDocument, textUser, number, models, dbData, combinedInputMessages, combinedTargetMessages);
+            const childInputMessages = childDoc.inputMessage;
+            const childTargetMessages = [childDoc.targetMessage];
+            console.log(childInputMessages,childTargetMessages )
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
         }
     });
 }
+
 module.exports = {
     Process
 };
