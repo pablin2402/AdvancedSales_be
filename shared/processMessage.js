@@ -31,10 +31,9 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages;
     //const targetMessage = targetMessages.join(' ');
-    console.log(targetMessage)
-    console.log(inputMessages)
-    console.log(textUser)
-    //inputmessagesm => {ubi, lugar},  textuser=> lugar
+    console.log(targetMessage) // saludos
+    console.log(inputMessages)//{hola, saludos, holi}
+    console.log(textUser)//mensaje enviado de wpp
     if (inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage)) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
@@ -45,11 +44,11 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
-
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage;
-            const childTargetMessages = [childDoc.targetMessage];
+            const childTargetMessages = [childDoc.targetMessage].join('');
+            console.log(childTargetMessages)
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
         }
     });
