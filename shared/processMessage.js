@@ -26,11 +26,9 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
-    //console.log(doc,")_(*&^%$#$%^&*" ,textUser, ")(*&^%$%^&*",number,"_)(*&^&*(" ,models,")(*&^%^&*(" ,inputMessages, ")(*&^&*()",targetMessage)
     if (inputMessages.some(keyword => textUser.includes(keyword))){
-        //console.log("HOLAAAAAA", inputMessages.some(keyword => textUser.includes(keyword))) 
         console.log(targetMessage, number)
-        const targetMessage1 = targetMessages.map(msg => msg.toString()).join(' '); // Convertir y unir los mensajes
+        const targetMessage1 = targetMessage.map(msg => msg.toString()).join(' ');
         var model = whatsappModel.MessageText(targetMessage1, number);
         models.push(model);
         if (doc.messageType === "image") {
