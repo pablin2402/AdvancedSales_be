@@ -26,6 +26,7 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
+    console.log(doc, textUser, number, models, inputMessages, targetMessage)
     if (inputMessages.some(keyword => textUser.includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
@@ -46,8 +47,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const combinedInputMessages = inputMessages.concat(childDoc.inputMessage);
             const combinedTargetMessages = targetMessage.concat(childDoc.targetMessage);
-            console.log(combinedInputMessages)
-            console.log(combinedTargetMessages)
+           // console.log(combinedInputMessages)// {locacion, lugar}
+           // console.log(combinedTargetMessages)// la ubicacion es la calle tantos tantos 
             processDocument(childDocument, textUser, number, models, dbData, combinedInputMessages, combinedTargetMessages);
         }
     });
