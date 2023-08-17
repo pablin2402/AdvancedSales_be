@@ -29,7 +29,7 @@ async function Process(textUser, number){
     }
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages, parentChild) {
-    const targetMessage='';
+    let targetMessage='';
     if(parentChild){
         targetMessage = targetMessages
     }
