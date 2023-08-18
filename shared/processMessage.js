@@ -1,12 +1,20 @@
 const whatsappModel = require("../shared/whatsappmodels");
 const whatsappService = require("../services/whatsappService");
 const TextProcess = require("../models/TextProcess");
-const natural = require('natural');
+const WordNet = require('node-wordnet');
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
-
+async function getSynonyms(word) {
+    return new Promise((resolve, reject) => {
+        wordNet.lookup(word, (results) => {
+            const synonyms = results.map(result => result.synonyms);
+            const flattenedSynonyms = synonyms.reduce((acc, val) => acc.concat(val), []);
+            resolve(flattenedSynonyms);
+        });
+    });
+}
 async function Process(textUser, number){
     var models = [];
 
@@ -31,9 +39,9 @@ async function Process(textUser, number){
 }
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages;
-    const inputSynonyms = natural.PorterStemmer.attach().findSynonyms(inputMessages[0], 10);
+    const inputSynonyms = await getSynonyms(inputMessages[0]);
 
-    if (inputSynonyms.some(synonym => textUser.includes(synonym) || inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage))) {
+    if (inputSynonyms.some(synonym => textUser.includes(synonym)) || textUser.includes(targetMessage)) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
