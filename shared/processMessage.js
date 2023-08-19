@@ -12,7 +12,7 @@ async function Process(textUser, number){
     try {
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
-            const inputMessages = doc.inputMessage; 
+            const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
 
             processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
@@ -31,7 +31,7 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
     const targetMessage = targetMessages;
 
-    if (inputMessages.some(keyword => textUser.includes(keyword)) || textUser.includes(targetMessage)) {
+    if (inputMessages.some(keyword => textUser.toLowerCase().includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
