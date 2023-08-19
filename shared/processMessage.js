@@ -15,7 +15,7 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
 
-            processDocument(doc, textUser, number, models, dbData, inputMessages,targetMessage);
+            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
         });
         if (models.length === 0) {
             var model = whatsappModel.MessageText("No entiendo lo que dices", number);
@@ -28,9 +28,8 @@ async function Process(textUser, number){
         console.error("Error fetching data from the database:", error);
     }
 }
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessages) {
-    const targetMessage = targetMessages;
 
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     if (inputMessages.some(keyword => textUser.toLowerCase().includes(keyword))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
@@ -39,14 +38,14 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             models.push(modelImage);
         }
     }
+
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
-            const childInputMessages = childDoc.inputMessage;
-            const childTargetMessages = [childDoc.targetMessage].join('');
-            console.log(childTargetMessages)
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessages);
+            const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
+            const childTargetMessage = childDoc.targetMessage;
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
     });
 }
