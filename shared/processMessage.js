@@ -2,27 +2,6 @@ const whatsappModel = require("../shared/whatsappmodels");
 const whatsappService = require("../services/whatsappService");
 const TextProcess = require("../models/TextProcess");
 
-const OPENAI_API_KEY = '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';
-
-async function getSynonyms(word) {
-    const response = await axios.post(
-        'https://api.openai.com/v1/engines/davinci-codex/completions',
-        {
-            prompt: `Get synonyms for "${word}"`,
-            max_tokens: 50,
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            }
-        }
-    );
-    const synonyms = response.data.choices.map(choice => choice.text.trim());
-    console.log("laskjhgfc"+synonyms)
-    return synonyms;
-}
-
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
@@ -60,19 +39,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
     }
 
-    const synonymsPromises = inputMessages.map(async keyword => {
-        const synonyms = await getSynonyms(keyword);
-        return synonyms;
-    });
-    console.log("0987654"+synonymsPromises)
-    
-    const synonymsArrays = await Promise.all(synonymsPromises);
-    const flatSynonyms = synonymsArrays.flat();
-
-    if (flatSynonyms.some(synonym => textUser.toLowerCase().includes(synonym))) {
-        var model = whatsappModel.MessageText(targetMessage, number);
-        models.push(model);
-    }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
