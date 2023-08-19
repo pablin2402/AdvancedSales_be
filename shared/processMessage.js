@@ -1,6 +1,8 @@
 const whatsappModel = require("../shared/whatsappmodels");
 const whatsappService = require("../services/whatsappService");
 const TextProcess = require("../models/TextProcess");
+const synonymsLibrary = require("../my-synonyms-library"); 
+
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -14,7 +16,6 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
-
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
         });
         if (models.length === 0) {
@@ -30,7 +31,11 @@ async function Process(textUser, number){
 }
 
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
-    if (inputMessages.some(keyword => textUser.toLowerCase().includes(keyword))) {
+    const synonyms = synonymsLibrary.getSynonyms(textUser);
+    if (inputMessages.some(keyword => textUser.toLowerCase().includes(keyword))
+    ||
+        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
+    ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         if (doc.messageType === "image") {
