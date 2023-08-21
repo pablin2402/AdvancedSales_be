@@ -34,7 +34,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = accent.removeDiacritics(textUser);
     console.log(normalizedTextUser);
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    if (inputMessages.some(keyword => removeDiacritics(keyword.toLowerCase().includes(normalizedTextUser)))
+    if (inputMessages.some(keyword => accent.removeDiacritics(keyword.toLowerCase().includes(normalizedTextUser)))
     ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
     ) {
