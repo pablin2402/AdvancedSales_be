@@ -14,7 +14,7 @@ const findDefaultChildTargetMessage = async () => {
             return null;  
         }
         const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
-        console.log(defaultChild)
+        console.log(def)
         if (defaultChild) {
             return defaultChild.targetMessage;
         } else {
@@ -27,32 +27,24 @@ const findDefaultChildTargetMessage = async () => {
 };
 
 
-async function Process(textUser, number) {
+async function Process(textUser, number){
     var models = [];
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        const defaultMessage = await findDefaultChildTargetMessage();
+        let defaultMessage = await findDefaultChildTargetMessage();
 
-        let messageFound = false;
-
-        for (let i = 0; i < dbData.length && !messageFound; i++) {
-            const doc = dbData[i];
-            const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
-            const targetMessage = doc.targetMessage;
-
-            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
-
-            if (models.length > 0) {
-                messageFound = true;
+        dbData.forEach(doc => {
+            const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
+            const targetMessage = doc.targetMessage; 
+            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
+        });
+        if (models.length === 0) {
+            if(defaultMessage != null){
+                var model = whatsappModel.MessageText(defaultMessage, number);
+                models.push(model);
             }
         }
-
-        if (!messageFound) {
-            var model = whatsappModel.MessageText(defaultMessage, number);
-            models.push(model);
-        }
-
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
@@ -60,7 +52,6 @@ async function Process(textUser, number) {
         console.error("Error fetching data from the database:", error);
     }
 }
-
 
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
