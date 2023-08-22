@@ -14,7 +14,7 @@ const findDefaultChildTargetMessage = async () => {
             return null;  
         }
         const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
-        console.log(def)
+        console.log(defaultChild)
         if (defaultChild) {
             return defaultChild.targetMessage;
         } else {
@@ -33,17 +33,15 @@ async function Process(textUser, number){
     try {
         const dbData = await getListOfTextProcess("CL-01");
         let defaultMessage = await findDefaultChildTargetMessage();
-
+        console.log(defaultMessage)
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
         });
         if (models.length === 0) {
-            if(defaultMessage != null){
                 var model = whatsappModel.MessageText(defaultMessage, number);
                 models.push(model);
-            }
         }
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
