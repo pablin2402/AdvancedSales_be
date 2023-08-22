@@ -10,6 +10,7 @@ const getListOfTextProcess = async (idClient) => {
 const findDefaultChildTargetMessage = (doc) => {
     const defaultChild = doc.children.find(child => child.type_message === "Default");
     if (defaultChild) {
+        console.log(defaultChild)
         return defaultChild.targetMessage;
     } else {
         return null;
@@ -25,6 +26,7 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
             const defaultMessage = findDefaultChildTargetMessage(doc);
+            console.log(defaultMessage)
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
         });
      
@@ -50,7 +52,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             models.push(modelImage);
         }
     }
-    else if (defaultMessage !== null) {
+    else if (defaultMessage === null) {
         var model = whatsappModel.MessageText(defaultMessage, number);
         models.push(model);
     }
