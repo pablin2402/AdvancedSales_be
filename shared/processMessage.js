@@ -7,28 +7,33 @@ const {removeDiacritics} = require("../utils/util")
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
-const getDefaultMessageFromDB = async () => {
+const findDefaultChildTargetMessage = async () => {
     try {
-        const defaultMessage = await TextProcess.findOne({ 'children.type_message': "Default" });
-        console.log(defaultMessage.children.$.targetMessage)
-        if (defaultMessage) {
-            console.log(defaultMessage.children.$.targetMessage)
-            return defaultMessage.children.$.targetMessage;
+        const parentDocument = await TextProcess.findById("64d087f3a573840044e93d9d");
+        console.log(parentDocument)
+        if (!parentDocument) {
+            return null;  
+        }
+
+        const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
+        if (defaultChild) {
+            return defaultChild.targetMessage;
         } else {
-            return "Mensaje por defecto cuando no se entiende";
+            return null; 
         }
     } catch (error) {
-        console.error("Error fetching default message from the database:", error);
-        return "Mensaje por defecto cuando no se entiende";
+        console.error("Error finding default child target message:", error);
+        return null;
     }
 };
+
 
 async function Process(textUser, number){
     var models = [];
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        const defaultMessage = await getDefaultMessageFromDB();
+        const defaultMessage = await findDefaultChildTargetMessage();
 
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
