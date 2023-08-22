@@ -10,10 +10,10 @@ const getListOfTextProcess = async (idClient) => {
 const getDefaultMessageFromDB = async () => {
     try {
         const defaultMessage = await TextProcess.findOne({ 'children.type_message': "Default" });
-        console.log(defaultMessage)
+        console.log(defaultMessage.children.$.targetMessage)
         if (defaultMessage) {
-            console.log(defaultMessage)
-            return defaultMessage.targetMessage;
+            console.log(defaultMessage.children.$.targetMessage)
+            return defaultMessage.children.$.targetMessage;
         } else {
             return "Mensaje por defecto cuando no se entiende";
         }
