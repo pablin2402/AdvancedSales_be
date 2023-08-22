@@ -21,17 +21,13 @@ async function Process(textUser, number){
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        //let defaultMessage = await findDefaultChildTargetMessage();
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
             const defaultMessage = findDefaultChildTargetMessage(doc);
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
         });
-        if (defaultMessage !== null && models.length === 0) {
-            var model = whatsappModel.MessageText(defaultMessage, number);
-            models.push(model);
-        }
+     
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
