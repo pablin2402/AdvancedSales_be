@@ -11,6 +11,7 @@ const findDefaultChildTargetMessage = async () => {
     try {
         const parentDocument = await TextProcess.findById("64d087f3a573840044e93d9d");
         let defaultChild = parentDocument.children.find(child => child.type_message === "Default");
+        console.log("jojo"+defaultChild)
         if (defaultChild) {
             return defaultChild.targetMessage;
         }
