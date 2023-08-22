@@ -33,13 +33,19 @@ async function Process(textUser, number){
     try {
         const dbData = await getListOfTextProcess("CL-01");
         const defaultMessage = await findDefaultChildTargetMessage();
+        let messageFound = false;
 
-        dbData.forEach(doc => {
+       dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
-            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
+            if (!messageFound) {
+                processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
+                if (models.length > 0) {
+                    messageFound = true;
+                }
+            }
         });
-        if (defaultMessage) {
+        if (!messageFound) {
             var model = whatsappModel.MessageText(defaultMessage, number);
             models.push(model);
         }
