@@ -10,12 +10,11 @@ const getListOfTextProcess = async (idClient) => {
 const findDefaultChildTargetMessage = async () => {
     try {
         const parentDocument = await TextProcess.findById("64d087f3a573840044e93d9d");
-        console.log(parentDocument)
         if (!parentDocument) {
             return null;  
         }
-
         const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
+        console.log(defaultChild)
         if (defaultChild) {
             return defaultChild.targetMessage;
         } else {
