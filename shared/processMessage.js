@@ -52,7 +52,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             models.push(modelImage);
         }
     }
-    else if (defaultMessage === null) {
+    else if (defaultMessage !== null) {
         var model = whatsappModel.MessageText(defaultMessage, number);
         models.push(model);
     }
