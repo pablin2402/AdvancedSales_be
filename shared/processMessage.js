@@ -13,8 +13,7 @@ const findDefaultChildTargetMessage = async () => {
         if (!parentDocument) {
             return null;  
         }
-        const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
-        console.log(defaultChild)
+        let defaultChild = parentDocument.children.find(child => child.type_message === "Default");
         if (defaultChild) {
             return defaultChild.targetMessage;
         } else {
