@@ -45,7 +45,7 @@ async function Process(textUser, number){
                 }
             }
         });
-        if (!messageFound) {
+        if (messageFound) {
             var model = whatsappModel.MessageText(defaultMessage, number);
             models.push(model);
         }
