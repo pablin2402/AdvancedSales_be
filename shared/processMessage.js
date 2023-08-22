@@ -10,10 +10,12 @@ const getListOfTextProcess = async (idClient) => {
 const findDefaultChildTargetMessage = async () => {
     try {
         const parentDocument = await TextProcess.findById("64d087f3a573840044e93d9d");
-        let defaultChild = parentDocument.children.find(child => child.type_message === "Default");
-        console.log("jojo"+defaultChild)
+        const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
         if (defaultChild) {
+            console.log("jojo" + defaultChild.targetMessage);
             return defaultChild.targetMessage;
+        } else {
+            return null;
         }
     } catch (error) {
         console.error("Error finding default child target message:", error);
@@ -28,16 +30,15 @@ async function Process(textUser, number){
     try {
         const dbData = await getListOfTextProcess("CL-01");
         let defaultMessage = await findDefaultChildTargetMessage();
-        console.log("holooo"+defaultMessage)
-        if (models.length === 0) {
-            var model = whatsappModel.MessageText(defaultMessage, number);
-            models.push(model);
-        }
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
         });
+        if (defaultMessage !== null && models.length === 0) {
+            var model = whatsappModel.MessageText(defaultMessage, number);
+            models.push(model);
+        }
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
