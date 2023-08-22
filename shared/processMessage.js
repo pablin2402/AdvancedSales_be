@@ -39,7 +39,7 @@ async function Process(textUser, number){
             const targetMessage = doc.targetMessage; 
             processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
         });
-        if (models.length === 0) {
+        if (defaultMessage) {
             var model = whatsappModel.MessageText(defaultMessage, number);
             models.push(model);
         }
