@@ -129,6 +129,19 @@ const addInputMessageChildren = async (req, res) => {
         res.status(500).json({ message: 'Failed to add new input message', error });
     }
 };
+const getDefaultMessageFromDB = async () => {
+    try {
+        const defaultMessage = await TextProcess.findOne({ 'children.$.type_message': "Default" });
+        if (defaultMessage) {
+            return defaultMessage.targetMessage;
+        } else {
+            return "Mensaje por defecto cuando no se entiende";
+        }
+    } catch (error) {
+        console.error("Error fetching default message from the database:", error);
+        return "Mensaje por defecto cuando no se entiende";
+    }
+};
 const updateText = async (req, res) => {
     const { _id, targetMessage} = req.body;
   
@@ -200,5 +213,5 @@ const removeChild = async (req, res) => {
 };
 
 module.exports = {
-    getListOfTextProcess, updateImageChildren ,postTextProcess, updateText, updateTextChildren, addInputMessage, addInputMessageChildren, addNewChild,addNewGrandChild, removeInputMessage, removeInputMessageFromChildren, removeChild
+    getListOfTextProcess, getDefaultMessageFromDB,updateImageChildren ,postTextProcess, updateText, updateTextChildren, addInputMessage, addInputMessageChildren, addNewChild,addNewGrandChild, removeInputMessage, removeInputMessageFromChildren, removeChild
 };
