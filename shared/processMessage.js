@@ -9,7 +9,8 @@ const getListOfTextProcess = async (idClient) => {
 };
 const getDefaultMessageFromDB = async () => {
     try {
-        const defaultMessage = await TextProcess.findOne({ 'children.$.type_message': "Default" });
+        const defaultMessage = await TextProcess.findOne({ 'children.type_message': "Default" });
+        console.log(defaultMessage)
         if (defaultMessage) {
             console.log(defaultMessage)
             return defaultMessage.targetMessage;
