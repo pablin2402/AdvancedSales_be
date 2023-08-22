@@ -7,33 +7,26 @@ const {removeDiacritics} = require("../utils/util")
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
-const findDefaultChildTargetMessage = async () => {
-    try {
-        const parentDocument = await TextProcess.findById("64d087f3a573840044e93d9d");
-        const defaultChild = parentDocument.children.find(child => child.type_message === "Default");
-        if (defaultChild) {
-            console.log("jojo" + defaultChild.targetMessage);
-            return defaultChild.targetMessage;
-        } else {
-            return null;
-        }
-    } catch (error) {
-        console.error("Error finding default child target message:", error);
+const findDefaultChildTargetMessage = (doc) => {
+    const defaultChild = doc.children.find(child => child.type_message === "Default");
+    if (defaultChild) {
+        return defaultChild.targetMessage;
+    } else {
         return null;
     }
 };
-
 
 async function Process(textUser, number){
     var models = [];
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
-        let defaultMessage = await findDefaultChildTargetMessage();
+        //let defaultMessage = await findDefaultChildTargetMessage();
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const targetMessage = doc.targetMessage; 
-            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage);
+            const defaultMessage = findDefaultChildTargetMessage(doc);
+            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
         });
         if (defaultMessage !== null && models.length === 0) {
             var model = whatsappModel.MessageText(defaultMessage, number);
@@ -47,7 +40,7 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword))
@@ -60,6 +53,10 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
         }
+    }
+    else if (defaultMessage !== null) {
+        var model = whatsappModel.MessageText(defaultMessage, number);
+        models.push(model);
     }
 
     doc.children.forEach(childDoc => {
