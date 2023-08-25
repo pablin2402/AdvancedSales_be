@@ -8,6 +8,7 @@ const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
 const findDefaultChildTargetMessage = (doc) => {
+    console.log(doc)
     const defaultChild = doc.find(child => child.type_message === "Default");
     if (defaultChild) {
         console.log(defaultChild)
@@ -24,10 +25,10 @@ async function Process(textUser, number){
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
-            const targetMessage = doc.targetMessage; 
-            const defaultMessage = findDefaultChildTargetMessage(doc);
-            console.log(defaultMessage)
-            processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage);
+            const parentTargetMessage = doc.targetMessage; 
+            const parent2TargetMessage = doc.targetMessage; 
+
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
         });
      
         models.forEach(model => {
@@ -38,11 +39,10 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, defaultMessage) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword))
-    ||
+    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
@@ -52,8 +52,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             models.push(modelImage);
         }
     }
-    else if (defaultMessage !== null) {
-        var model = whatsappModel.MessageText(defaultMessage, number);
+    else {
+        var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
 
@@ -63,7 +63,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
         }
     });
 }
