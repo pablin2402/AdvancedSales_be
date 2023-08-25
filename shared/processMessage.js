@@ -27,8 +27,8 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
             const parent2TargetMessage = doc.targetMessage; 
-
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
+            let lastIteration = true
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
      
         models.forEach(model => {
@@ -39,7 +39,7 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration = true) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
