@@ -42,8 +42,27 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
+
+    let foundInChild = false; // Variable para rastrear si se encuentra en algún hijo
+
+    doc.children.forEach(childDoc => {
+        const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
+        if (childDocument && !childDoc.processed) {
+            childDoc.processed = true; 
+            const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
+            const childTargetMessage = childDoc.targetMessage;
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
+            
+            if (!foundInChild) {
+                foundInChild = inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+                               synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()));
+            }
+        }
+    });
+
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
+        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase())) ||
+        foundInChild // Si se encontró en algún hijo
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
@@ -56,17 +75,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
-
-    doc.children.forEach(childDoc => {
-        const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
-        if (childDocument && !childDoc.processed) {
-            childDoc.processed = true; 
-            const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
-        }
-    });
 }
+
 
 module.exports = {
     Process
