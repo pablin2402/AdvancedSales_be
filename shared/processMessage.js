@@ -42,7 +42,8 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    let foundChild= false;
+    let foundChild = false;
+
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
@@ -52,17 +53,32 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
-            foundChild = true;
         }
     }
-    else if(foundChild) {
-        console.log("caca")
-        var model = whatsappModel.MessageText(targetMessage2, number);
-        models.push(model);
-        foundChild = false;
+    else {
+        while (!foundChild && doc.children.length > 0) {
+            const childDoc = doc.children[0]; // Tomar el primer hijo, podrías modificar esto según tu lógica
+            const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
+            if (childDocument && !childDoc.processed) {
+                childDoc.processed = true; 
+                const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
+                const childTargetMessage = childDoc.targetMessage;
 
+                if (childInputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+                    synonyms.some(synonym => childInputMessages.includes(synonym.toLowerCase()) )
+                ) {
+                    var model = whatsappModel.MessageText(childTargetMessage, number);
+                    models.push(model);
+                    foundChild = true;
+                }
+            }
+        }
     }
 
+    if (!foundChild) {
+        var model = whatsappModel.MessageText(targetMessage2, number);
+        models.push(model);
+    }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
