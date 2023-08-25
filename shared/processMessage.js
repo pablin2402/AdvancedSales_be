@@ -43,7 +43,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
-    console.log(isLastIteration, addedMessage);
 
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
@@ -57,7 +56,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             addedMessage = true;
         }
     }
-    else if (!isLastIteration && addedMessage) {
+    else if (isLastIteration && !addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
@@ -68,7 +67,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage; false&&
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, !isLastIteration && addedMessage);
         }
     });
 }
