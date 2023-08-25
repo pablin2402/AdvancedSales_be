@@ -43,6 +43,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
+    console.log(isLastIteration, addedMessage);
+
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
@@ -55,7 +57,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             addedMessage = true;
         }
     }
-    else if (isLastIteration && addedMessage) {
+    else if (!isLastIteration && addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
