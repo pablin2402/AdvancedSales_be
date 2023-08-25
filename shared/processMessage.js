@@ -25,9 +25,9 @@ async function Process(textUser, number){
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
-            const parentTargetMessage = doc.targetMessage; 
-            const parent2TargetMessage = doc.targetMessage; 
-            let lastIteration = true
+            const parentTargetMessage = doc.targetMessage; //hola
+            const parent2TargetMessage = doc.targetMessage; //hola
+            let lastIteration = false;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
      
