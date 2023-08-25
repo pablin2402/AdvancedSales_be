@@ -55,12 +55,12 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             foundChild = true;
         }
     }
-    else if(foundChild) {
-        console.log("caca")
-        var model = whatsappModel.MessageText(targetMessage2, number);
-        models.push(model);
-        foundChild = false;
-
+    else{
+        if(!foundChild){
+            var model = whatsappModel.MessageText(targetMessage2, number);
+            models.push(model);
+            foundChild = false;
+        }
     }
 
     doc.children.forEach(childDoc => {
