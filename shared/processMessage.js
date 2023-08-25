@@ -43,8 +43,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let foundChild= false;
-    while(!foundChild){
-        if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) || synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))) {
+    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
+    ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         foundChild = true;
@@ -52,16 +53,16 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
             foundChild = true;
-            }
         }
     }
-    if(!foundChild) {
+    else if(foundChild) {
         console.log("caca")
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
         foundChild = false;
 
     }
+
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
