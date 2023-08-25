@@ -27,7 +27,7 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; //hola
             const parent2TargetMessage = doc.targetMessage; //hola
-            let lastIteration = false;
+            let lastIteration = true;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
      
@@ -43,7 +43,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
-
+    console.log(isLastIteration, !addedMessage)
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
@@ -67,7 +67,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage; false&&
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, !isLastIteration && addedMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
 }
