@@ -39,28 +39,25 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration = true) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    let foundChild= false;
+    let addedMessage = false;
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
-        foundChild = true;
+        addedMessage = true;
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
-            foundChild = true;
+            addedMessage = true;
         }
     }
-    else{
-        if(!foundChild){
-            var model = whatsappModel.MessageText(targetMessage2, number);
-            models.push(model);
-            foundChild = false;
-        }
+    else if (isLastIteration && !addedMessage) {
+        var model = whatsappModel.MessageText(targetMessage2, number);
+        models.push(model);
     }
 
     doc.children.forEach(childDoc => {
@@ -69,7 +66,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
 }
