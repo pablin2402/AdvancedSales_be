@@ -56,7 +56,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             foundChild = true;
         }
     }
-    else if(foundChild) {
+    else if(!foundChild) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
         foundChild = false;
