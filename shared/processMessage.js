@@ -42,8 +42,25 @@ async function Process(textUser, number){
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
+    let foundChild= false;
+    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
+    ) {
+        var model = whatsappModel.MessageText(targetMessage, number);
+        models.push(model);
+        foundChild = true;
+        if (doc.messageType === "image") {
+            var modelImage = whatsappModel.MessageImage(doc.link, number);
+            models.push(modelImage);
+            foundChild = true;
+        }
+    }
+    else if(foundChild) {
+        var model = whatsappModel.MessageText(targetMessage2, number);
+        models.push(model);
+        foundChild = false;
 
-    let foundInChild = false; // Variable para rastrear si se encuentra en algún hijo
+    }
 
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
@@ -52,31 +69,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
-            
-            if (!foundInChild) {
-                foundInChild = inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-                               synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()));
-            }
         }
     });
-
-    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase())) ||
-        foundInChild // Si se encontró en algún hijo
-    ) {
-        var model = whatsappModel.MessageText(targetMessage, number);
-        models.push(model);
-        if (doc.messageType === "image") {
-            var modelImage = whatsappModel.MessageImage(doc.link, number);
-            models.push(modelImage);
-        }
-    }
-    else {
-        var model = whatsappModel.MessageText(targetMessage2, number);
-        models.push(model);
-    }
 }
-
 
 module.exports = {
     Process
