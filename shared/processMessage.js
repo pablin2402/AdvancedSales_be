@@ -8,7 +8,7 @@ const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
 const findDefaultChildTargetMessage = (doc) => {
-    const defaultChild = doc.children.find(child => child.type_message === "Default");
+    const defaultChild = doc.find(child => child.type_message === "Default");
     if (defaultChild) {
         console.log(defaultChild)
         return defaultChild.targetMessage;
