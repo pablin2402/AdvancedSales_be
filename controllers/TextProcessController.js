@@ -175,6 +175,23 @@ const updateTextChildren = async (req, res) => {
         res.status(500).json({ message: 'Failed to update child text message', error });
     }
 };
+const updateTypeTextChildren = async (req, res) => {
+    const { _id, targetId, type_message } = req.body;
+    console.log(_id, req.body.targetId, type_message)
+    try {
+        const updateTextMessage = await TextProcess.findOneAndUpdate(
+            { _id, 'children.targetId': targetId },
+            { $set: { 'children.$.type_message': type_message } },
+            { new: true }
+        );
+        if (!updateTextMessage) {
+            return res.status(404).json({ message: 'Text Message not found' });
+        }
+        res.json({ message: 'Child Text Message updated successfully', type_message: updateTextMessage });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update child text message', error });
+    }
+};
 const updateImageChildren = async (req, res) => {
     const { _id, targetId, messageType, link } = req.body;
     console.log(_id, targetId, messageType, link)
@@ -213,5 +230,18 @@ const removeChild = async (req, res) => {
 };
 
 module.exports = {
-    getListOfTextProcess, getDefaultMessageFromDB,updateImageChildren ,postTextProcess, updateText, updateTextChildren, addInputMessage, addInputMessageChildren, addNewChild,addNewGrandChild, removeInputMessage, removeInputMessageFromChildren, removeChild
+    getListOfTextProcess, 
+    updateTypeTextChildren,
+    getDefaultMessageFromDB,
+    updateImageChildren, 
+    postTextProcess, 
+    updateText, 
+    updateTextChildren, 
+    addInputMessage, 
+    addInputMessageChildren, 
+    addNewChild,
+    addNewGrandChild, 
+    removeInputMessage, 
+    removeInputMessageFromChildren, 
+    removeChild
 };

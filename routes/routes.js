@@ -68,6 +68,7 @@ router
 .put("/text/children/id",textController.removeInputMessageFromChildren)
 .put("/text/child/id",textController.removeChild)
 .post("/text/child/default",textController.getDefaultMessageFromDB)
-.put("/image/child/id",textController.updateImageChildren);
+.put("/image/child/id",textController.updateImageChildren)
+.put("/type/child/id",textController.updateTypeTextChildren);
 
 module.exports = router;
