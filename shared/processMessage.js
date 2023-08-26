@@ -25,8 +25,8 @@ async function Process(textUser, number){
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
-            const parentTargetMessage = doc.targetMessage; //hola
-            const parent2TargetMessage = doc.targetMessage; //hola
+            const parentTargetMessage = doc.targetMessage; // Mensaje del padre
+            const parent2TargetMessage = doc.targetMessage2; // Mensaje del padre para else if
             let lastIteration = true;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
@@ -43,7 +43,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
-    console.log(isLastIteration, !addedMessage)
+
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
@@ -66,11 +66,13 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
+
     if (isLastIteration && !addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
 }
+
 
 module.exports = {
     Process
