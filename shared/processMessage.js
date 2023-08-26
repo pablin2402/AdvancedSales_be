@@ -27,8 +27,7 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; // Mensaje del padre
             const parent2TargetMessage = doc.targetMessage2; // Mensaje del padre para else if
-            let lastIteration = true;
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
         });
      
         models.forEach(model => {
@@ -39,21 +38,20 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    let addedMessage = false;
+    let foundChild = false;
 
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
-        addedMessage = true;
+        foundChild = true;
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
-            addedMessage = true;
         }
     }
 
@@ -63,15 +61,16 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
         }
     });
-    console.log(isLastIteration, !addedMessage)
-    if (isLastIteration && !addedMessage) {
+
+    if (!foundChild && targetMessage2) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
 }
+
 
 
 module.exports = {
