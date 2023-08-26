@@ -68,8 +68,12 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     if (!foundChild && targetMessage2) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
+    } else if (!foundChild) {
+        var model = whatsappModel.MessageText(targetMessage, number);
+        models.push(model);
     }
 }
+
 
 
 
