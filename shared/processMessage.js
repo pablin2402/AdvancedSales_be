@@ -26,7 +26,7 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; // Mensaje del padre
-            const parent2TargetMessage = doc.targetMessage2; // Mensaje del padre para else if
+            const parent2TargetMessage = doc.targetMessage; // Mensaje del padre para else if
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
         });
      
@@ -65,15 +65,14 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
     });
 
-    if (!foundChild && targetMessage2) {
+    if (!foundChild && targetMessage2 && !doc.parentId) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
-    } else if (!foundChild) {
+    } else if (!foundChild && !doc.parentId) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
     }
 }
-
 
 
 
