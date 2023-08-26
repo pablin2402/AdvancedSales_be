@@ -66,7 +66,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
-
+    console.log(isLastIteration, !addedMessage)
     if (isLastIteration && !addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
