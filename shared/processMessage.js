@@ -56,10 +56,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             addedMessage = true;
         }
     }
-    else if (isLastIteration && !addedMessage) {
-        var model = whatsappModel.MessageText(targetMessage2, number);
-        models.push(model);
-    }
 
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
@@ -70,6 +66,10 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
+    if (isLastIteration && !addedMessage) {
+        var model = whatsappModel.MessageText(targetMessage2, number);
+        models.push(model);
+    }
 }
 
 module.exports = {
