@@ -7,30 +7,18 @@ const {removeDiacritics} = require("../utils/util")
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
-const findDefaultChildTargetMessage = (doc) => {
-    console.log(doc)
-    const defaultChild = doc.find(child => child.type_message === "Default");
-    if (defaultChild) {
-        console.log(defaultChild)
-        return defaultChild.targetMessage;
-    } else {
-        return null;
-    }
-};
 
 async function Process(textUser, number){
     var models = [];
-
     try {
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
-            const parentTargetMessage = doc.targetMessage; // Mensaje del padre
-            const parent2TargetMessage = doc.targetMessage2; // Mensaje del padre para else if
+            const parentTargetMessage = doc.targetMessage; 
+            const parent2TargetMessage = doc.targetMessage2; 
             let lastIteration = true;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
-     
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
@@ -43,7 +31,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
-
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
@@ -56,7 +43,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             addedMessage = true;
         }
     }
-
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
@@ -66,14 +52,12 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
-    
+    console.log(isLastIteration, !addedMessage)
     if (isLastIteration && !addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
 }
-
-
 module.exports = {
     Process
 };
