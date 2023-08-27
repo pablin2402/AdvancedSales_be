@@ -26,8 +26,9 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; // Mensaje del padre
-            const parent2TargetMessage = doc.targetMessage; // Mensaje del padre para else if
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
+            const parent2TargetMessage = doc.targetMessage2; // Mensaje del padre para else if
+            let lastIteration = true;
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
      
         models.forEach(model => {
@@ -38,20 +39,21 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    let foundChild = false;
+    let addedMessage = false;
 
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
-        foundChild = true;
+        addedMessage = true;
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
+            addedMessage = true;
         }
     }
 
@@ -61,19 +63,15 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
         }
     });
-
-    if (!foundChild && targetMessage2 && !doc.parentId) {
+    
+    if (isLastIteration && !addedMessage) {
         var model = whatsappModel.MessageText(targetMessage2, number);
-        models.push(model);
-    } else if (!foundChild && !doc.parentId) {
-        var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
     }
 }
-
 
 
 module.exports = {
