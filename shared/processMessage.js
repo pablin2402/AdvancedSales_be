@@ -16,8 +16,7 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
             const parent2TargetMessage = doc.targetMessage; 
-            let lastIteration = true;
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage);
         });
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
@@ -27,37 +26,44 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
-    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
-    ) {
+    let foundMatch = false; // Variable para saber si se encontró alguna coincidencia en este documento
+
+    if (!foundMatch && (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase())))) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
         addedMessage = true;
+        foundMatch = true; // Se encontró una coincidencia en este documento
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
-            addedMessage = true;
         }
     }
+
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2);
         }
     });
-    console.log(isLastIteration && !addedMessage)
-    if (isLastIteration && !addedMessage) {
+
+    if (!addedMessage && !foundMatch && targetMessage2) {
         var model = whatsappModel.MessageText(targetMessage2, number);
         models.push(model);
     }
 }
+
+module.exports = {
+    Process
+};
+
 module.exports = {
     Process
 };
