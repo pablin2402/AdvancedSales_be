@@ -15,7 +15,7 @@ async function Process(textUser, number){
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
-            const parent2TargetMessage = doc.targetMessage2; 
+            const parent2TargetMessage = doc.targetMessage; 
             let lastIteration = true;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
