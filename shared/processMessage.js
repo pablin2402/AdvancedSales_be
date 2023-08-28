@@ -11,17 +11,17 @@ const getListOfTextProcess = async (idClient) => {
 async function Process(textUser, number){
     var models = [];
     try {
+        let parent2TargetMessage;
         const dbData = await getListOfTextProcess("CL-01");
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
-            const parent2TargetMessage = doc.targetMessage; 
-            let lastIteration = true;
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
+            parent2TargetMessage = doc.targetMessage; 
+            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
         });
         console.log(models.length)
         if(!models.length){
-            var model = whatsappModel.MessageText("parent2TargetMessage", number);
+            var model = whatsappModel.MessageText(parent2TargetMessage, number);
             models.push(model);        
         }
         models.forEach(model => {
@@ -33,7 +33,7 @@ async function Process(textUser, number){
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, targetMessage2, isLastIteration) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = false;
@@ -55,7 +55,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, targetMessage2, isLastIteration && !addedMessage);
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
     });
 }
