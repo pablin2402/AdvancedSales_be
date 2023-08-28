@@ -19,7 +19,8 @@ async function Process(textUser, number){
             let lastIteration = true;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, parent2TargetMessage, lastIteration);
         });
-        if(models.length === 0){
+        console.log(models.length)
+        if(!models.length){
             var model = whatsappModel.MessageText(parent2TargetMessage, number);
             models.push(model);        
         }
