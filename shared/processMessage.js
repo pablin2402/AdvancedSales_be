@@ -21,7 +21,7 @@ async function Process(textUser, number){
         });
         console.log(models.length)
         if(!models.length){
-            var model = whatsappModel.MessageText(parent2TargetMessage, number);
+            var model = whatsappModel.MessageText("parent2TargetMessage", number);
             models.push(model);        
         }
         models.forEach(model => {
