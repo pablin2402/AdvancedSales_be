@@ -3,25 +3,39 @@ const whatsappService = require("../services/whatsappService");
 const TextProcess = require("../models/TextProcess");
 const synonymsLibrary = require("../my-synonyms-library"); 
 const {removeDiacritics} = require("../utils/util")
+const TemplateMessage = require("../models/TemplateMessage");
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
 };
 
+const getTemplateMessage = async (idClient) => {
+    return await TemplateMessage.find({ idClient: idClient });
+};
 async function Process(textUser, number){
     var models = [];
     try {
         let parent2TargetMessage;
+        let template;
         const dbData = await getListOfTextProcess("CL-01");
+        const dbDataTemplate = await getTemplateMessage("CL-02");
+
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
             parent2TargetMessage = doc.targetMessage; 
+            template = doc.template_message;
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
         });
-        console.log(models.length)
-        if(!models.length){
-            var model = whatsappModel.MessageText(parent2TargetMessage, number);
+        let dataTemplate;
+        dbDataTemplate.forEach(doc => {
+            dataTemplate = doc;
+            template = doc.template_message;
+        });
+        if(!models.length && template){
+            //var model = whatsappModel.MessageText(parent2TargetMessage, number);
+            console.log(dataTemplate)
+            var model = whatsappModel.MessageList(number, dataTemplate.body, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
         models.forEach(model => {

@@ -12,6 +12,7 @@ const orderController = require("../controllers/OrderController");
 const gmailController = require("../controllers/GmailController");
 const clientLocationController = require("../controllers/ClientLocationController");
 const textController = require("../controllers/TextProcessController");
+const TemplateController = require("../controllers/TemplateMessageController");
 
 router
 .get("/", whatsAppController.VerifyToken)
@@ -69,6 +70,8 @@ router
 .put("/text/child/id",textController.removeChild)
 .post("/text/child/default",textController.getDefaultMessageFromDB)
 .put("/image/child/id",textController.updateImageChildren)
-.put("/type/child/id",textController.updateTypeTextChildren);
+.put("/type/child/id",textController.updateTypeTextChildren)
+
+.post("/template",TemplateController.postTemplate);
 
 module.exports = router;

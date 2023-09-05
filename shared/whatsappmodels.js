@@ -35,7 +35,16 @@ function SampleImage(number,image){
     return data;
 }
 
-function MessageList(number){
+function MessageList(number, body, footer, savedTemplateMessage){
+    const centroDeAtencionSection = {
+        "title": savedTemplateMessage.centerTitle,
+        "rows": savedTemplateMessage.action.map(action => ({
+          "id": action.id,
+          "title": action.title,
+          "description": action.subtitle
+        }))
+      };
+    console.log(centroDeAtencionSection)
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
         "to": number,
@@ -43,46 +52,15 @@ function MessageList(number){
         "interactive": {
             "type": "list",
             "body": {
-                "text": "✅ Tengo estas opciones"
+                "text": body
             },
             "footer": {
-                "text": "Selecciona una de las opciones para poder atenderte"
+                "text": footer
             },
             "action": {
-                "button": "Ver opciones",
-                "sections": [
-                    {
-                        "title": "Compra y vende productos",
-                        "rows": [
-                            {
-                                "id": "main-comprar",
-                                "title": "Comprar",
-                                "description": "Compra los mejores productos para tu hogar"
-                            },
-                            {
-                                "id": "main-vender",
-                                "title": "Vender",
-                                "description": "Vende tus productos"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "📍Centro de atención",
-                        "rows": [
-                            {
-                                "id": "main-agencia",
-                                "title": "Agencia",
-                                "description": "Puedes visitar nuestra agencia."
-                            },
-                            {
-                                "id": "main-contacto",
-                                "title": "Centro de contacto",
-                                "description": "Te atenderá uno de nuestro agentes."
-                            }
-                        ]
-                    }
-                ]
-            }
+                "button": text,
+                "sections": [centroDeAtencionSection]
+              }
         }
     });
     return data;

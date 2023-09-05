@@ -91,7 +91,7 @@ function SampleButtons(number){
     return data;
 }
 
-function SampleList(number){
+function SampleList(number, text, footer){
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
         "to": number,
@@ -99,13 +99,13 @@ function SampleList(number){
         "interactive": {
             "type": "list",
             "body": {
-                "text": "✅ Tengo estas opciones"
+                "text": text
             },
             "footer": {
-                "text": "Selecciona una de las opciones para poder atenderte"
+                "text": footer
             },
             "action": {
-                "button": "Ver opciones",
+                "button": text,
                 "sections": [
                     {
                         "title": "Compra y vende productos",

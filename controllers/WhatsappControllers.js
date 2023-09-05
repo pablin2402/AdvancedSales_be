@@ -33,12 +33,10 @@ const ReceivedMessage = (req, res) => {
       var messages = messageObject[0];
       var number = messages["from"];
       var text = GetTextUser(messages);
-      //whatsappService.SendMessageWhatsApp(number, "El usuario dijo:" + text);
       if (text != "") 
       {
         processMessage.Process(text, number);
       }
-      res.send("Recibo mensaje :V");
     }
   } catch (e) { 
     res.send("EVENT_RECEIVED");
