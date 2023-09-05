@@ -19,7 +19,7 @@ async function Process(textUser, number){
         let template;
         const dbData = await getListOfTextProcess("CL-01");
         const dbDataTemplate = await getTemplateMessage("CL-02");
-
+        console.log(dbDataTemplate)
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
