@@ -32,6 +32,9 @@ async function Process(textUser, number){
             dataTemplate = doc;
             template = doc.template_message;
         });
+        console.log(dataTemplate)
+        console.log("dataTemplate")
+
         if(!models.length && template){
             //var model = whatsappModel.MessageText(parent2TargetMessage, number);
             console.log(dataTemplate)
