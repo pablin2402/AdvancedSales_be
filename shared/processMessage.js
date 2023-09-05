@@ -24,17 +24,15 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
             template = doc.template_message;
-            console.log(template)
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
         });
         let dataTemplate;
         dbDataTemplate.forEach(doc => {
             dataTemplate = doc;
             template = doc.template_message;
-            console.log(template)
         });
-    
-        if(!models.length && template){
+        console.log(dataTemplate.template_message)
+        if(!models.length && dataTemplate.template_message){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
