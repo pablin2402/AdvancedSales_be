@@ -14,16 +14,15 @@ const getTemplateMessage = async (idClient) => {
 };
 async function Process(textUser, number){
     var models = [];
+    var template;
+
     try {
-        let parent2TargetMessage;
-        let template;
         const dbData = await getListOfTextProcess("CL-01");
         const dbDataTemplate = await getTemplateMessage("CL-02");
-        console.log(dbDataTemplate)
+
         dbData.forEach(doc => {
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
-            parent2TargetMessage = doc.targetMessage; 
             template = doc.template_message;
             console.log(template)
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
