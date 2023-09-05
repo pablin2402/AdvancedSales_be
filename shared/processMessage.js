@@ -33,7 +33,7 @@ async function Process(textUser, number){
         });
         console.log(dataTemplate)
         console.log(dataTemplate.template_message)
-        if(!models.length && dataTemplate.template_message){
+        if(!models.length && dataTemplate.template_message === "R"){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
