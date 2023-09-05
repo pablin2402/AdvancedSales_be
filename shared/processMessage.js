@@ -14,7 +14,7 @@ const getTemplateMessage = async (idClient) => {
 };
 async function Process(textUser, number){
     var models = [];
-    var template;
+    var template = false;
 
     try {
         const dbData = await getListOfTextProcess("CL-01");
