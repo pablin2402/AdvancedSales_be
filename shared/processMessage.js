@@ -31,6 +31,7 @@ async function Process(textUser, number){
             dataTemplate = doc;
             template = doc.template_message;
         });
+        console.log(dataTemplate)
         console.log(dataTemplate.template_message)
         if(!models.length && dataTemplate.template_message){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
