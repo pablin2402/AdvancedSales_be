@@ -37,10 +37,10 @@ function SampleImage(number,image){
 
 function MessageList(number, body, footer, savedTemplateMessage){
     const centroDeAtencionSection = {
-        "title": savedTemplateMessage.centerTitle,
+        "title": footer,
         "rows": savedTemplateMessage.action.map(action => ({
-          "id": action.id,
-          "title": action.title,
+          "id": "1",
+          "title": action.keyword,
           "description": action.subtitle
         }))
       };
@@ -58,7 +58,7 @@ function MessageList(number, body, footer, savedTemplateMessage){
                 "text": footer
             },
             "action": {
-                "button": text,
+                "button": body,
                 "sections": [centroDeAtencionSection]
               }
         }
