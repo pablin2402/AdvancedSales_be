@@ -39,7 +39,7 @@ function MessageList(number, body, footer, savedTemplateMessage){
     const centroDeAtencionSection = {
         "title": footer,
         "rows": savedTemplateMessage.action.map(action => ({
-          "id": "1",
+          "id": action.id,
           "title": action.keyword,
           "description": action.subtitle
         }))

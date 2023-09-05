@@ -24,23 +24,18 @@ async function Process(textUser, number){
             const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
             const parentTargetMessage = doc.targetMessage; 
             parent2TargetMessage = doc.targetMessage; 
-          //  template = doc.template_message;
+            template = doc.template_message;
+            console.log(template)
             processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
         });
         let dataTemplate;
         dbDataTemplate.forEach(doc => {
             dataTemplate = doc;
             template = doc.template_message;
+            console.log(template)
         });
-        console.log(dataTemplate)
-        console.log("dataTemplate")
-
-        console.log(template)
-
-
-        if(!models.length){
-            //var model = whatsappModel.MessageText(parent2TargetMessage, number);
-            console.log(dataTemplate)
+    
+        if(!models.length && template){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
