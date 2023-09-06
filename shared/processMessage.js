@@ -12,7 +12,7 @@ const getListOfTextProcess = async (idClient) => {
 const getTemplateMessage = async (idClient) => {
     return await TemplateMessage.find({ idClient: idClient });
 };
-const processedMessages = new Set(); // Almacenamiento temporal para rastrear mensajes procesados
+const processedMessages = new Set();
 
 async function Process(textUser, number) {
     var models = [];
@@ -36,14 +36,11 @@ async function Process(textUser, number) {
       });
   
       if (!models.length && template === "R") {
-        // Verifica si ya hemos procesado este mensaje antes
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
-  
-          // Registra el mensaje como procesado
-          processedMessages.add(messageKey);
+            processedMessages.add(messageKey);
         }
       }
   
