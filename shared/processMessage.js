@@ -12,41 +12,48 @@ const getListOfTextProcess = async (idClient) => {
 const getTemplateMessage = async (idClient) => {
     return await TemplateMessage.find({ idClient: idClient });
 };
-async function Process(textUser, number){
+const processedMessages = new Set(); // Almacenamiento temporal para rastrear mensajes procesados
+
+async function Process(textUser, number) {
     var models = [];
     var template = false;
-
+  
     try {
-        const dbData = await getListOfTextProcess("CL-01");
-        const dbDataTemplate = await getTemplateMessage("CL-02");
-
-        dbData.forEach(doc => {
-            const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase()); 
-            const parentTargetMessage = doc.targetMessage; 
-            template = doc.template_message;
-            processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
-        });
-        let dataTemplate;
-        dbDataTemplate.forEach(doc => {
-            dataTemplate = doc;
-            template = doc.template_message;
-        });
-        if(!models.length){
-                var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
-                models.push(model);        
-            
+      const dbData = await getListOfTextProcess("CL-01");
+      const dbDataTemplate = await getTemplateMessage("CL-02");
+  
+      dbData.forEach(doc => {
+        const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
+        const parentTargetMessage = doc.targetMessage;
+        template = doc.template_message;
+        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
+      });
+  
+      let dataTemplate;
+      dbDataTemplate.forEach(doc => {
+        dataTemplate = doc;
+        template = doc.template_message;
+      });
+  
+      if (!models.length && template === "R") {
+        // Verifica si ya hemos procesado este mensaje antes
+        const messageKey = `${number}:${textUser}`;
+        if (!processedMessages.has(messageKey)) {
+          var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
+          models.push(model);
+  
+          // Registra el mensaje como procesado
+          processedMessages.add(messageKey);
         }
-        models.forEach(model => {
-            whatsappService.SendMessageWhatsApp1(model);
-        });
-        models = [];
-        console.log(models)
-
-       
+      }
+  
+      models.forEach(model => {
+        whatsappService.SendMessageWhatsApp1(model);
+      });
     } catch (error) {
-        console.error("Error fetching data from the database:", error);
+      console.error("Error fetching data from the database:", error);
     }
-}
+  }
 
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
