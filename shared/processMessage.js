@@ -31,7 +31,7 @@ async function Process(textUser, number){
             dataTemplate = doc;
             template = doc.template_message;
         });
-        if(!models.length){
+        if(models.length === 0){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
