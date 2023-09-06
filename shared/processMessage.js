@@ -31,15 +31,13 @@ async function Process(textUser, number){
             dataTemplate = doc;
             template = doc.template_message;
         });
-        console.log(dataTemplate)
-        console.log(dataTemplate.template_message)
-        if(!models.length && dataTemplate.template_message === "R"){
+        if(!models.length){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
-        for (const model of models) {
+        models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
-          }
+        });
        
     } catch (error) {
         console.error("Error fetching data from the database:", error);
