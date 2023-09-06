@@ -31,19 +31,16 @@ async function Process(textUser, number){
             dataTemplate = doc;
             template = doc.template_message;
         });
-        console.log(models.length)
-        console.log(!models.length)
-        console.log(models)
         if(!models.length){
-            if(template === "R"){
                 var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
                 models.push(model);        
-            }
+            
         }
         models.forEach(model => {
             whatsappService.SendMessageWhatsApp1(model);
         });
         models = [];
+        console.log(models)
 
        
     } catch (error) {
