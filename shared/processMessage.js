@@ -37,9 +37,9 @@ async function Process(textUser, number){
             var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
             models.push(model);        
         }
-        models.forEach(model => {
+        for (const model of models) {
             whatsappService.SendMessageWhatsApp1(model);
-        });
+          }
        
     } catch (error) {
         console.error("Error fetching data from the database:", error);
