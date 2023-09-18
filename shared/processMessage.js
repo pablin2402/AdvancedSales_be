@@ -61,13 +61,21 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
         console.log("ENTRE")
-          var model = whatsappModel.MessageText(targetMessage, number);
-          models.push(model);
+          const messageKey = `${number}:${targetMessage}`;
+          if (!processedMessages.has(messageKey)) {
+            var model = whatsappModel.MessageText(targetMessage, number);
+            models.push(model);
+            processedMessages.add(messageKey);
+          }
           addedMessage = false;
           if (doc.messageType === "image") {
+            const messageKeys = `${number}:${targetMessage}`;
+            if (!processedMessages.has(messageKey)) {
               var modelImage = whatsappModel.MessageImage(doc.link, number);
               models.push(modelImage);
-              addedMessage = false;
+              processedMessages.add(messageKeys);
+            }
+            addedMessage = false;
           }
         }
     }
