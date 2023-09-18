@@ -56,6 +56,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const synonyms = synonymsLibrary.getSynonyms(textUser);//obtiene sinonimos
     let addedMessage = true;
     console.log(inputMessages)
+    if(addedMessage){
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
@@ -68,7 +69,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
               models.push(modelImage);
               addedMessage = false;
           }
-      
+        }
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
