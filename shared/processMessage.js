@@ -76,7 +76,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            console.log(childInputMessages.inputMessage)
+            console.log(childInputMessages.targetMessage)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
