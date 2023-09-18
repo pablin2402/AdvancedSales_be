@@ -36,7 +36,7 @@ async function Process(textUser, number) {
       });
 
       if (!models.length && template === "R") {
-        const messageKey = `${number}:${textUser}`;
+        const messageKey = `${number}:${dataTemplate.text}`;
         console.log(messageKey)
 
         if (!processedMessages.has(messageKey)) {
