@@ -4,6 +4,7 @@ const TextProcess = require("../models/TextProcess");
 const synonymsLibrary = require("../my-synonyms-library"); 
 const {removeDiacritics} = require("../utils/util")
 const TemplateMessage = require("../models/TemplateMessage");
+const { Target } = require("puppeteer");
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -59,6 +60,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
+        console.log("ENTRE", targetMessage)
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
           addedMessage = false;
@@ -71,11 +73,11 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
-        console.log(childDoc)
+        console.log(childDocument)
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            console.log(childInputMessages)
+            console.log(childInputMessages.inputMessage)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
