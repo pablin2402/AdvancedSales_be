@@ -41,7 +41,7 @@ function SendMessageWhatsApp(number, textResponse){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer EAAMaY0K534YBO4sjSvJpwvhwXO0ULZBrMkKObvdODIQlI3gr6q3RGBdEakcIqaVxTIIaEjPN6wh0LX6Ltg30lVV6Dkddrh3vnZAUx7xHt5HCHxUG8sFT9qzW9bhhk8pHNYvmljTN3GkesynRsn4PCzaa9Eakp0rpHx1wdxAU0si4iEMm1lVONKsTocOnm85PGyZAv5jYwWja5Vi2dEZD"
+            Authorization: "Bearer EAAMaY0K534YBOzU0VrOhjGLNc4fTAbZB4A7FJRzZAGwhBdeEQo5eZB69DeW7xnZBaQ8q0pHT8flWgjiS2JcXt3xNwer5eiYljpFtD7x1mXOkk9PtAo35OqFycpZA3IL8DklF8AJlZAwmHJVcxZCAOiyBAqL7VaZA2qVqMs7IKMr3lcNhuDlMzNyhFGpGtSgRsmlqXlyKZB0O9RC5KlgYOG8wZD"
         }
     };
     const req = https.request(options, res => {
