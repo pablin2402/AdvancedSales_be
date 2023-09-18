@@ -37,6 +37,8 @@ async function Process(textUser, number) {
 
       if (!models.length && template === "R") {
         const messageKey = `${number}:${textUser}`;
+        console.log(messageKey)
+
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
@@ -61,6 +63,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         const messageKey = `${number}:${targetMessage}`;
+        console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
@@ -69,7 +72,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         addedMessage = false;
         if (doc.messageType === "image") {
           const messageKeys = `${number}:${targetMessage}`;
-          if (!processedMessages.has(messageKey)) {
+          console.log(messageKeys)
+
+          if (!processedMessages.has(messageKeys)) {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
             processedMessages.add(messageKeys);
