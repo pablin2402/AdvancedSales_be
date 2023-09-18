@@ -23,9 +23,9 @@ async function Process(textUser, number) {
       const dbDataTemplate = await getTemplateMessage("CL-02");
   
       dbData.forEach(doc => {
-        const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());// hola, olo
-        const parentTargetMessage = doc.targetMessage;// hola que
-        template = doc.template_message;// false 
+        const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
+        const parentTargetMessage = doc.targetMessage;
+        template = doc.template_message;
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
       });
   
@@ -34,13 +34,13 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
-  
+
       if (!models.length && template === "R") {
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
-            processedMessages.add(messageKey);
+          processedMessages.add(messageKey);
         }
       }
       models.forEach(model => {
@@ -49,36 +49,36 @@ async function Process(textUser, number) {
     } catch (error) {
       console.error("Error fetching data from the database:", error);
     }
-  }
+}
 
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
-    const normalizedTextUser = removeDiacritics(textUser).toLowerCase();//remueve acentos
-    const synonyms = synonymsLibrary.getSynonyms(textUser);//obtiene sinonimos
+    const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
+    const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
-    console.log(inputMessages)
-    if(addedMessage){
+
+    if (addedMessage) {
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-      synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
+          synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
-        console.log("ENTRE")
-          const messageKey = `${number}:${targetMessage}`;
+        const messageKey = `${number}:${targetMessage}`;
+        if (!processedMessages.has(messageKey)) {
+          var model = whatsappModel.MessageText(targetMessage, number);
+          models.push(model);
+          processedMessages.add(messageKey);
+        }
+        addedMessage = false;
+        if (doc.messageType === "image") {
+          const messageKeys = `${number}:${targetMessage}`;
           if (!processedMessages.has(messageKey)) {
-            var model = whatsappModel.MessageText(targetMessage, number);
-            models.push(model);
-            processedMessages.add(messageKey);
+            var modelImage = whatsappModel.MessageImage(doc.link, number);
+            models.push(modelImage);
+            processedMessages.add(messageKeys);
           }
           addedMessage = false;
-          if (doc.messageType === "image") {
-            const messageKeys = `${number}:${targetMessage}`;
-            if (!processedMessages.has(messageKey)) {
-              var modelImage = whatsappModel.MessageImage(doc.link, number);
-              models.push(modelImage);
-              processedMessages.add(messageKeys);
-            }
-            addedMessage = false;
-          }
         }
+      }
     }
+
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
@@ -89,6 +89,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
     });
 }
+
 module.exports = {
     Process
 };
