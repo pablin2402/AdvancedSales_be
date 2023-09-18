@@ -4,7 +4,6 @@ const TextProcess = require("../models/TextProcess");
 const synonymsLibrary = require("../my-synonyms-library"); 
 const {removeDiacritics} = require("../utils/util")
 const TemplateMessage = require("../models/TemplateMessage");
-const { Target } = require("puppeteer");
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -76,7 +75,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            console.log(childDoc.inputMessage)
+            console.log(childInputMessages)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
