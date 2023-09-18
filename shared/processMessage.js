@@ -54,8 +54,8 @@ async function Process(textUser, number) {
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();//remueve acentos
     const synonyms = synonymsLibrary.getSynonyms(textUser);//obtiene sinonimos
-    let addedMessage = doc.processed;
-    if(addedMessage){
+    let addedMessage = true;
+    console.log(inputMessages)
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
@@ -68,14 +68,13 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
               models.push(modelImage);
               addedMessage = false;
           }
-      }
+      
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            console.log(childInputMessages)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
