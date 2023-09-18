@@ -54,26 +54,28 @@ async function Process(textUser, number) {
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();//remueve acentos
     const synonyms = synonymsLibrary.getSynonyms(textUser);//obtiene sinonimos
-    let addedMessage = false;
+    let addedMessage = doc.processed;
     if(addedMessage){
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
-          addedMessage = true;
+          addedMessage = false;
           if (doc.messageType === "image") {
               var modelImage = whatsappModel.MessageImage(doc.link, number);
               models.push(modelImage);
-              addedMessage = true;
+              addedMessage = false;
           }
       }
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
+        console.log(childDoc)
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
+            console.log(childInputMessages)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
