@@ -60,7 +60,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
       synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
       ) {
-        console.log("ENTRE", targetMessage)
+        console.log("ENTRE")
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
           addedMessage = false;
