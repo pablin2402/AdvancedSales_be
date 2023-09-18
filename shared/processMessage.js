@@ -43,7 +43,6 @@ async function Process(textUser, number) {
             processedMessages.add(messageKey);
         }
       }
-  
       models.forEach(model => {
         whatsappService.SendMessageWhatsApp1(model);
       });
@@ -55,17 +54,14 @@ async function Process(textUser, number) {
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
-    let addedMessage = false;
     if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
         synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
     ) {
         var model = whatsappModel.MessageText(targetMessage, number);
         models.push(model);
-        addedMessage = true;
         if (doc.messageType === "image") {
             var modelImage = whatsappModel.MessageImage(doc.link, number);
             models.push(modelImage);
-            addedMessage = true;
         }
     }
     doc.children.forEach(childDoc => {
