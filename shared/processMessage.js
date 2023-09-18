@@ -73,10 +73,11 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
+        console.log(childDocument)
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
-            console.log(childInputMessages.targetMessage)
+            //console.log(childInputMessages.targetMessage)
             const childTargetMessage = childDoc.targetMessage;
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
