@@ -8,7 +8,7 @@ function SendMessageWhatsApp1(data){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer EAAMaY0K534YBO71MShJxM6LZC1UyLNEZCwo8bo21RMpQg0pVmqJqiuIIVt4ZCMbs8X0MKuQJhUueo8FJMTTgvBL6ocES201bWZAvz4yXwCCcpKKxdnFdP2STvwEZBPwQMhd02rHaBVNtkhSMZC8iAOZBx43DtACN2z23Y3CxWsFPRGEvMdmkoo7d1niE4L1llEAAMaY0K534YBOxDBMnLCl3YMfpkOGR8uez7kCC0JDRZB2CAa4fYRzjgwTc4TGZAR0NTn2trADiprrpv51KuE0PIR8UIHlUOuZBreabLxDcBPoWFWrZCwOctqH9jAZApGYkB7wXuOnwCVeovTnWlpoccBcZBnawXQ63IBDoxPZA4TPJQq5aJFaFvTG4gxLExQcQpP3gkyVgiZBbtynpboUzQZDqP4F5LZCbdErZCD2pnDficEZD"
+            Authorization: "Bearer EAAMaY0K534YBO0hX4xXBhNOZBtKcJy6kfZB6WfHXhskAKMyq0ZBD361Q2gsZAgE8JC6VKSJWBZA7Qei7r4jzZAaaYqcsNtjjm7RrlR7r51zwfzL6AjK3WAao5RDURvgFUgPY2V1Rn5r1aZAXepdzM5TxJwXW8A5FlqU7sr5WPE0BiPdBa6seXszFaPCfXFjoSrYqYVFbBCesSBElZAEwZBwIZD"
         }
     };
     const req = https.request(options, res => {
@@ -41,7 +41,7 @@ function SendMessageWhatsApp(number, textResponse){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer EAAMaY0K534YBOxDBMnLCl3YMfpkOGR8uez7kCC0JDRZB2CAa4fYRzjgwTc4TGZAR0NTn2trADiprrpv51KuE0PIR8UIHlUOuZBreabLxDcBPoWFWrZCwOctqH9jAZApGYkB7wXuOnwCVeovTnWlpoccBcZBnawXQ63IBDoxPZA4TPJQq5aJFaFvTG4gxLExQcQpP3gkyVgiZBbtynpboUzQZD"
+            Authorization: "Bearer EAAMaY0K534YBO0hX4xXBhNOZBtKcJy6kfZB6WfHXhskAKMyq0ZBD361Q2gsZAgE8JC6VKSJWBZA7Qei7r4jzZAaaYqcsNtjjm7RrlR7r51zwfzL6AjK3WAao5RDURvgFUgPY2V1Rn5r1aZAXepdzM5TxJwXW8A5FlqU7sr5WPE0BiPdBa6seXszFaPCfXFjoSrYqYVFbBCesSBElZAEwZBwIZD"
         }
     };
     const req = https.request(options, res => {
