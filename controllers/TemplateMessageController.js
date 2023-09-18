@@ -1,5 +1,7 @@
 const TemplateMessage = require("../models/TemplateMessage");
-
+const getListOfTextProcess = async (req, res) => {
+    await TemplateMessage.find({idClient:String(req.body.idClient)}).then(p=>  res.json(p));
+  };
 const postTemplate = (req, res) => {
   try {
    const text = new TemplateMessage({
@@ -25,4 +27,4 @@ const postTemplate = (req, res) => {
   }
 };
 
-module.exports = { postTemplate };
+module.exports = { postTemplate, getListOfTextProcess };

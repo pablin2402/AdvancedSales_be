@@ -72,6 +72,7 @@ router
 .put("/image/child/id",textController.updateImageChildren)
 .put("/type/child/id",textController.updateTypeTextChildren)
 
-.post("/template",TemplateController.postTemplate);
+.post("/template",TemplateController.postTemplate)
+.post("/template/list",TemplateController.getListOfTextProcess);
 
 module.exports = router;
