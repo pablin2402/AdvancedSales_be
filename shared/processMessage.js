@@ -23,9 +23,9 @@ async function Process(textUser, number) {
       const dbDataTemplate = await getTemplateMessage("CL-02");
   
       dbData.forEach(doc => {
-        const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
-        const parentTargetMessage = doc.targetMessage;
-        template = doc.template_message;
+        const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());// hola, olo
+        const parentTargetMessage = doc.targetMessage;// hola que
+        template = doc.template_message;// false 
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
       });
   
@@ -52,20 +52,22 @@ async function Process(textUser, number) {
   }
 
 async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
-    const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
-    const synonyms = synonymsLibrary.getSynonyms(textUser);
+    const normalizedTextUser = removeDiacritics(textUser).toLowerCase();//remueve acentos
+    const synonyms = synonymsLibrary.getSynonyms(textUser);//obtiene sinonimos
     let addedMessage = false;
-    if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
-        synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
-    ) {
-        var model = whatsappModel.MessageText(targetMessage, number);
-        models.push(model);
-        addedMessage = true;
-        if (doc.messageType === "image") {
-            var modelImage = whatsappModel.MessageImage(doc.link, number);
-            models.push(modelImage);
-            addedMessage = true;
-        }
+    if(addedMessage){
+      if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
+      synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()) )
+      ) {
+          var model = whatsappModel.MessageText(targetMessage, number);
+          models.push(model);
+          addedMessage = true;
+          if (doc.messageType === "image") {
+              var modelImage = whatsappModel.MessageImage(doc.link, number);
+              models.push(modelImage);
+              addedMessage = true;
+          }
+      }
     }
     doc.children.forEach(childDoc => {
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
