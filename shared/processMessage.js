@@ -37,10 +37,8 @@ async function Process(textUser, number) {
       });
 
       if (!models.length && template === "R") {
-        
         const messageKey = `${number}:${textUser}`;
         console.log(messageKey)
-
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
@@ -50,7 +48,8 @@ async function Process(textUser, number) {
       models.forEach(model => {
         whatsappService.SendMessageWhatsApp1(model);
       });
-      models = []
+      models = [];
+      console.log(models)
     } catch (error) {
       console.error("Error fetching data from the database:", error);
     }

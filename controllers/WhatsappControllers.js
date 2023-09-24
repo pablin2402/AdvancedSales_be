@@ -53,8 +53,6 @@ const SendMessageTemplate = (req, res) => {
 };
 const SendMessage = (req, res) => {
   if(req.body.message_type === "message"){
-    console.log(    req.body.fullMessage,
-      req.body.recipientNumber)
     var model = whatsappModel.MessageText(
       req.body.fullMessage,
       req.body.recipientNumber
