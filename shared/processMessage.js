@@ -62,7 +62,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
-        const messageKey = `${number}:${targetMessage}`;
+        let date = new Date();
+        const messageKey = `${number}:${targetMessage}:${date}`;
         console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageText(targetMessage, number);
@@ -71,7 +72,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
         addedMessage = false;
         if (doc.messageType === "image") {
-          const messageKeys = `${number}:${targetMessage}`;
+          let date = new Date();
+
+          const messageKeys = `${number}:${targetMessage}:${date}`;
           console.log(messageKeys)
 
           if (!processedMessages.has(messageKeys)) {
