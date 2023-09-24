@@ -37,7 +37,8 @@ async function Process(textUser, number) {
       });
 
       if (!models.length && template === "R") {
-        const messageKey = `${number}:${dataTemplate.template_message}`;
+        let dates= new Date();
+        const messageKey = `${number}:${dataTemplate.text}:${dates}`;
         console.log(messageKey)
 
         if (!processedMessages.has(messageKey)) {
@@ -73,9 +74,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
         addedMessage = false;
         if (doc.messageType === "image") {
-          let date = new Date();
-
-          const messageKeys = `${number}:${textUser}:${date}`;
+          let dates = new Date();
+          const messageKeys = `${number}:${textUser}:${dates}`;
           console.log(messageKeys)
 
           if (!processedMessages.has(messageKeys)) {
