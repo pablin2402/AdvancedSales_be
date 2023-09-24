@@ -50,6 +50,7 @@ async function Process(textUser, number) {
       models.forEach(model => {
         whatsappService.SendMessageWhatsApp1(model);
       });
+      models = []
     } catch (error) {
       console.error("Error fetching data from the database:", error);
     }
