@@ -4,6 +4,7 @@ const TextProcess = require("../models/TextProcess");
 const synonymsLibrary = require("../my-synonyms-library"); 
 const {removeDiacritics} = require("../utils/util")
 const TemplateMessage = require("../models/TemplateMessage");
+const { text } = require("body-parser");
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -63,7 +64,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         let date = new Date();
-        const messageKey = `${number}:${targetMessage}:${date}`;
+        const messageKey = `${number}:${text}:${date}`;
         console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageText(targetMessage, number);
@@ -74,7 +75,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         if (doc.messageType === "image") {
           let date = new Date();
 
-          const messageKeys = `${number}:${targetMessage}:${date}`;
+          const messageKeys = `${number}:${text}:${date}`;
           console.log(messageKeys)
 
           if (!processedMessages.has(messageKeys)) {
