@@ -37,8 +37,8 @@ async function Process(textUser, number) {
       });
 
       if (!models.length && template === "R") {
-        let dates= new Date();
-        const messageKey = `${number}:${dataTemplate.text}:${dates}`;
+        
+        const messageKey = `${number}:${dataTemplate.text}`;
         console.log(messageKey)
 
         if (!processedMessages.has(messageKey)) {
@@ -65,7 +65,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         let date = new Date();
-        const messageKey = `${number}:${textUser}:${date}`;
+        const messageKey = `${number}:${textUser}`;
         console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageText(targetMessage, number);
