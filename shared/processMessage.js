@@ -83,7 +83,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
             console.log("caca")
-            var modelImage = whatsappModel.MessageImage(doc.link, number);
+            var modelImage = whatsappModel.SampleImage(doc.link, number);
             models.push(modelImage);
             processedMessages.add(messageKeys);
           }
