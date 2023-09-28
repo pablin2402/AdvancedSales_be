@@ -27,7 +27,6 @@ async function Process(textUser, number) {
         const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
         const parentTargetMessage = doc.targetMessage;
         template = doc.template_message;
-        console.log(doc)
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
       });
   
@@ -60,7 +59,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
-
+    console.log(doc)
     if (addedMessage) {
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
