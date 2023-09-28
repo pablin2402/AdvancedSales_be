@@ -65,6 +65,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       ) {
         let date = new Date();
         const messageKey = `${number}:${textUser}`;
+        console.log("HOLA")
         console.log(doc.messageType)
         if(doc.messageType === "message"){
           if (!processedMessages.has(messageKey)) {
