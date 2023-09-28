@@ -144,7 +144,6 @@ const getDefaultMessageFromDB = async () => {
 };
 const updateText = async (req, res) => {
     const { _id, targetMessage} = req.body;
-  
     try {
       const updateTextMessage = await TextProcess.findOneAndUpdate(
         { _id },
@@ -177,7 +176,6 @@ const updateTextChildren = async (req, res) => {
 };
 const updateTypeTextChildren = async (req, res) => {
     const { _id, targetId, type_message } = req.body;
-    console.log(_id, req.body.targetId, type_message)
     try {
         const updateTextMessage = await TextProcess.findOneAndUpdate(
             { _id, 'children.targetId': targetId },
@@ -194,7 +192,6 @@ const updateTypeTextChildren = async (req, res) => {
 };
 const updateImageChildren = async (req, res) => {
     const { _id, targetId, messageType, link } = req.body;
-    console.log(_id, targetId, messageType, link)
     try {
         const updateTextMessage = await TextProcess.findOneAndUpdate(
             { _id, 'children.targetId': targetId },
@@ -211,24 +208,38 @@ const updateImageChildren = async (req, res) => {
 };
 const removeChild = async (req, res) => {
     const { _id, targetId } = req.body;
-
     try {
         const updatedTextMessage = await TextProcess.findOneAndUpdate(
             { _id },
             { $pull: { children: { targetId: targetId } } },
             { new: true }
         );
-
         if (!updatedTextMessage) {
             return res.status(404).json({ message: 'Text Message not found' });
         }
-
         res.json({ message: 'Child removed successfully', textMessage: updatedTextMessage });
     } catch (error) {
         res.status(500).json({ message: 'Failed to remove child', error });
     }
 };
 
+const updateStatusTemplateTrue = async (req, res) => {
+    const { _id, status } = req.body;
+    console.log(_id)
+    try {
+      const updateTextMessage = await TextProcess.findOneAndUpdate(
+        { _id },
+        { template_message: status },
+        { new: true }
+      );
+      if (!updateTextMessage) {
+        return res.status(404).json({ message: 'Text Message not found' });
+      }
+      res.json({ message: 'Text Message status updated successfully', textMessage: updateTextMessage });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to update user status', error });
+    }
+};
 module.exports = {
     getListOfTextProcess, 
     updateTypeTextChildren,
@@ -243,5 +254,6 @@ module.exports = {
     addNewGrandChild, 
     removeInputMessage, 
     removeInputMessageFromChildren, 
-    removeChild
+    removeChild,
+    updateStatusTemplateTrue
 };

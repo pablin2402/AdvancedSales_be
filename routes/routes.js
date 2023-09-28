@@ -70,9 +70,11 @@ router
 .put("/text/child/id",textController.removeChild)
 .post("/text/child/default",textController.getDefaultMessageFromDB)
 .put("/image/child/id",textController.updateImageChildren)
+.put("/status/template",textController.updateStatusTemplateTrue)
 .put("/type/child/id",textController.updateTypeTextChildren)
 
 .post("/template",TemplateController.postTemplate)
-.post("/template/list",TemplateController.getListOfTextProcess);
+.post("/template/list",TemplateController.getListOfTextProcess)
+.delete("/template/id",TemplateController.deleteTemplate);
 
 module.exports = router;

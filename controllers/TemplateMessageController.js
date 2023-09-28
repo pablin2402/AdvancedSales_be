@@ -26,5 +26,16 @@ const postTemplate = (req, res) => {
     myConsole.log(e);
   }
 };
-
-module.exports = { postTemplate, getListOfTextProcess };
+const deleteTemplate = async (req, res) => {
+  try {
+    const existingTemplate = await TemplateMessage.findById(req.body._id);
+    if (!existingTemplate) {
+      return res.status(404).json({ message: 'Template message not found' });
+    }
+    await TemplateMessage.findByIdAndDelete(req.body._id);
+    res.json({ message: 'Template message deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete template message', error });
+  }
+};
+module.exports = { postTemplate, getListOfTextProcess,deleteTemplate };
