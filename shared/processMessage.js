@@ -22,7 +22,7 @@ async function Process(textUser, number) {
     try {
       const dbData = await getListOfTextProcess("CL-01");
       const dbDataTemplate = await getTemplateMessage("CL-02");
-  
+      console.log()
       dbData.forEach(doc => {
         const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
         const parentTargetMessage = doc.targetMessage;
@@ -36,7 +36,7 @@ async function Process(textUser, number) {
         template = doc.template_message;
       });
 
-      if (!models.length && template === "R") {
+      if (!models.length && template === true) {
         const messageKey = `${number}:${textUser}`;
         console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
