@@ -59,15 +59,12 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
-    console.log(doc)
     if (addedMessage) {
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         let date = new Date();
         const messageKey = `${number}:${textUser}`;
-        console.log(messageKey)
-        console.log(doc.messageType)
         if(doc.messageType === "message"){
           if (!processedMessages.has(messageKey)) {
             var model = whatsappModel.MessageText(targetMessage, number);
@@ -78,8 +75,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
 
         }
         if (doc.messageType === "image") {
-          console.log("caca")
-
           let dates = new Date();
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
@@ -94,11 +89,13 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
 
     doc.children.forEach(childDoc => {
+
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
+            console.log(childDocument)
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
     });
