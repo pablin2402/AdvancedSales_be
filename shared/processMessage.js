@@ -89,13 +89,13 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     }
 
     doc.children.forEach(childDoc => {
-
+      console.log("caca")
+        console.log(childDoc)
         const childDocument = dbData.find(item => item._id.toString() === childDoc.id_parent.toString());
         if (childDocument && !childDoc.processed) {
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            console.log(childDocument)
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
         }
     });
