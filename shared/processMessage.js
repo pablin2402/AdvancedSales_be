@@ -83,7 +83,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
             console.log("caca")
-            var modelImage = whatsappModel.SampleImage(doc.link, number);
+            var modelImage = whatsappModel.SampleImage("https://drive.google.com/file/d/1Z1-l_gBIQ4jmZBP7tEkiyZ-3CmJz2CkV/view?usp=drivesdk", number);
             models.push(modelImage);
             processedMessages.add(messageKeys);
           }
