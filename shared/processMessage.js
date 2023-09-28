@@ -26,8 +26,10 @@ async function Process(textUser, number) {
         console.log(doc.inputMessage)
         const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
         const parentTargetMessage = doc.targetMessage;
+        const linkImage = ""
+        const typeMessage = ""
         template = doc.template_message;
-        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage);
+        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage);
       });
   
       let dataTemplate;
@@ -98,7 +100,10 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             childDoc.processed = true; 
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage);
+            const childLinkImage = childDoc.link;
+            const childTypeMessage = childDoc.template_message;
+
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage);
         }
     });
 }
