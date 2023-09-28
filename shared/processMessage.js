@@ -83,7 +83,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
             console.log("caca")
-            var modelImage = whatsappModel.SampleImage(number,"https://drive.google.com/file/d/1Z1-l_gBIQ4jmZBP7tEkiyZ-3CmJz2CkV/view?usp=drivesdk");
+            var modelImage = whatsappModel.SampleImage(number,"https://www.tooltyp.com/wp-content/uploads/2014/10/1900x920-8-beneficios-de-usar-imagenes-en-nuestros-sitios-web.jpg");
             models.push(modelImage);
             processedMessages.add(messageKeys);
           }
