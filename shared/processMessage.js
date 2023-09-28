@@ -57,7 +57,7 @@ async function Process(textUser, number) {
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, childLinkImage, childTypeMessage) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
@@ -68,7 +68,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         let date = new Date();
         const messageKey = `${number}:${textUser}`;
 
-        if(doc.messageType === "message"){
+        if(childTypeMessage === "message"){
           console.log("entre")
           if (!processedMessages.has(messageKey)) {
             var model = whatsappModel.MessageText(targetMessage, number);
@@ -78,14 +78,14 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           addedMessage = false;
 
         }
-        if (doc.messageType === "image") {
+        if (childTypeMessage === "image") {
           console.log("imagen")
 
           let dates = new Date();
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
             console.log("caca")
-            var modelImage = whatsappModel.SampleImage(number,"https://www.tooltyp.com/wp-content/uploads/2014/10/1900x920-8-beneficios-de-usar-imagenes-en-nuestros-sitios-web.jpg");
+            var modelImage = whatsappModel.SampleImage(number,childLinkImage);
             models.push(modelImage);
             processedMessages.add(messageKeys);
           }
