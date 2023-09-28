@@ -101,7 +101,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             const childInputMessages = childDoc.inputMessage.map(keyword => keyword.toLowerCase());
             const childTargetMessage = childDoc.targetMessage;
             const childLinkImage = childDoc.link;
-            const childTypeMessage = childDoc.template_message;
+            const childTypeMessage = childDoc.messageType;
 
             processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage);
         }
