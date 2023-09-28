@@ -5,6 +5,7 @@ const textProcess = new Schema({
   date: { type: Date, default: Date.now },
   targetMessage: {type: String, require: true},
   idClient: { type: String, require: true },
+  messageType: { type: String, require: true },
   children: { type : Array , "default" : [] },
   template_message: { type : Boolean , require: true}
 });
