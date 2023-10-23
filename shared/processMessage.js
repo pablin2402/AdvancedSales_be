@@ -4,7 +4,6 @@ const TextProcess = require("../models/TextProcess");
 const synonymsLibrary = require("../my-synonyms-library"); 
 const {removeDiacritics} = require("../utils/util")
 const TemplateMessage = require("../models/TemplateMessage");
-const { text } = require("body-parser");
 
 const getListOfTextProcess = async (idClient) => {
     return await TextProcess.find({ idClient: idClient });
@@ -23,12 +22,10 @@ async function Process(textUser, number) {
       const dbData = await getListOfTextProcess("CL-01");
       const dbDataTemplate = await getTemplateMessage("CL-01");
       dbData.forEach(doc => {
-        console.log(doc.inputMessage)
         const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
         const parentTargetMessage = doc.targetMessage;
         const linkImage = ""
         const typeMessage = doc.messageType;
-        console.log("mesnaje", typeMessage)
         template = doc.template_message;
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage);
       });
@@ -38,11 +35,8 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
-      let date = new Date();
-      console.log(template)
       if ((models.length > 0) && template === true) {
-        const messageKey = `${number}:${textUser}:${date}`;
-        console.log(messageKey)
+        const messageKey = `${number}:${textUser}`;
         if (processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
@@ -66,14 +60,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
-        let date = new Date();
-        const messageKey = `${number}:${textUser}:${date}`;
-        console.log("clave", messageKey)
-        console.log(childTypeMessage, "tipo de mensaje")
+        const messageKey = `${number}:${textUser}`;
         if(childTypeMessage === "message"){
-          console.log("entre")
           if (!processedMessages.has(messageKey)) {
-            console.log("entre aqui tambien")
             var model = whatsappModel.MessageText(targetMessage, number);
             models.push(model);
             processedMessages.add(messageKey);
