@@ -71,6 +71,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         if(childTypeMessage === "message"){
           console.log("entre")
           if (!processedMessages.has(messageKey)) {
+            console.log("entre aqui tambien")
             var model = whatsappModel.MessageText(targetMessage, number);
             models.push(model);
             processedMessages.add(messageKey);
