@@ -38,10 +38,12 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
+      let date = new Date();
+      console.log(template)
       if ((models.length > 0) && template === true) {
-        const messageKey = `${number}:${textUser}`;
+        const messageKey = `${number}:${textUser}:${date}`;
         console.log(messageKey)
-        if (!processedMessages.has(messageKey)) {
+        if (processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
           processedMessages.add(messageKey);
