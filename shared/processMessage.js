@@ -37,7 +37,6 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
-
       if (!models.length && template === true) {
         const messageKey = `${number}:${textUser}`;
         console.log(messageKey)
