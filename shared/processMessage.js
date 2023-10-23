@@ -28,6 +28,7 @@ async function Process(textUser, number) {
         const typeMessage = doc.messageType;
         template = doc.template_message;
         const parent = doc.parent;
+        console.log(parent)
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage, parent);
       });
   
