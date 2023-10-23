@@ -65,7 +65,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         let date = new Date();
-        const messageKey = `${number}:${textUser}`;
+        const messageKey = `${number}:${textUser}:${date}`;
         console.log("clave", messageKey)
         console.log(childTypeMessage, "tipo de mensaje")
         if(childTypeMessage === "message"){
