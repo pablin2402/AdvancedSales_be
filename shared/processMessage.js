@@ -37,7 +37,7 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
-      if ((models.length > 0) && template === true) {
+      if (template === true) {
         const messageKey = `${number}:${textUser}`;
         if (processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
