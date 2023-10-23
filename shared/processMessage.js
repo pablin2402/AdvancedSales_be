@@ -34,7 +34,6 @@ async function Process(textUser, number) {
       let dataTemplate;
       dbDataTemplate.forEach(doc => {
         dataTemplate = doc;
-        template = doc.template_message;
       });
       console.log(template)
       if (template === true) {
