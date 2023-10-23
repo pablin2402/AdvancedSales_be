@@ -58,10 +58,13 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
-      console.log(childTypeMessage, parent)
+      console.log(childTypeMessage, parent, template)
       if(childTypeMessage === "message" && parent === true && template === false){
         const messageKey = `${number}:${textUser}`;
+        console.log("lo logre")
         if (!processedMessages.has(messageKey)) {
+          console.log("lo logre xt3716713")
+
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
           processedMessages.add(messageKey);
