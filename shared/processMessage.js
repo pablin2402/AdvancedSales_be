@@ -27,7 +27,8 @@ async function Process(textUser, number) {
         const inputMessages = doc.inputMessage.map(keyword => keyword.toLowerCase());
         const parentTargetMessage = doc.targetMessage;
         const linkImage = ""
-        const typeMessage = ""
+        const typeMessage = doc.messageType;
+        console.log("mesnaje", typeMessage)
         template = doc.template_message;
         processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage);
       });
