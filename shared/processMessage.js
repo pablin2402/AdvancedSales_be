@@ -27,7 +27,8 @@ async function Process(textUser, number) {
         const linkImage = ""
         const typeMessage = doc.messageType;
         template = doc.template_message;
-        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage);
+        const parent = doc.parent;
+        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage, parent);
       });
   
       let dataTemplate;
@@ -52,11 +53,21 @@ async function Process(textUser, number) {
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, childLinkImage, childTypeMessage) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, childLinkImage, childTypeMessage, parent) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
+      if(childTypeMessage === "message" && parent === true){
+        const messageKey = `${number}:${textUser}`;
+        if (!processedMessages.has(messageKey)) {
+          var model = whatsappModel.MessageText(targetMessage, number);
+          models.push(model);
+          processedMessages.add(messageKey);
+        }
+        addedMessage = false;
+
+      }
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
@@ -91,8 +102,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             const childTargetMessage = childDoc.targetMessage;
             const childLinkImage = childDoc.link;
             const childTypeMessage = childDoc.messageType;
-
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage);
+            const parent = childDoc.parent;
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage, parent);
         }
     });
 }
