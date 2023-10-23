@@ -7,7 +7,9 @@ const textProcess = new Schema({
   idClient: { type: String, require: true },
   messageType: { type: String, require: true },
   children: { type : Array , "default" : [] },
-  template_message: { type : Boolean , require: true}
+  template_message: { type : Boolean , require: true},
+  parent: { type : Boolean , require: true}
+
 });
 
 module.exports = mongoose.model("TextProcess", textProcess);
