@@ -58,6 +58,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
+      console.log(childTypeMessage, parent)
       if(childTypeMessage === "message" && parent === true){
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
