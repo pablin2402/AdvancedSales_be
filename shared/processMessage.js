@@ -38,7 +38,7 @@ async function Process(textUser, number) {
         dataTemplate = doc;
         template = doc.template_message;
       });
-      if (!models.length && template === true) {
+      if ((models.length > 0) && template === true) {
         const messageKey = `${number}:${textUser}`;
         console.log(messageKey)
         if (!processedMessages.has(messageKey)) {
@@ -51,7 +51,6 @@ async function Process(textUser, number) {
         whatsappService.SendMessageWhatsApp1(model);
       });
       models = [];
-      console.log(models)
     } catch (error) {
       console.error("Error fetching data from the database:", error);
     }
@@ -67,7 +66,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       ) {
         let date = new Date();
         const messageKey = `${number}:${textUser}`;
-
+        console.log("clave", messageKey)
+        console.log(childTypeMessage, "tipo de mensaje")
         if(childTypeMessage === "message"){
           console.log("entre")
           if (!processedMessages.has(messageKey)) {
@@ -79,12 +79,9 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
 
         }
         if (childTypeMessage === "image") {
-          console.log("imagen")
-
           let dates = new Date();
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
-            console.log("caca")
             var modelImage = whatsappModel.SampleImage(number,childLinkImage);
             models.push(modelImage);
             processedMessages.add(messageKeys);
