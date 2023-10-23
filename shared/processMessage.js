@@ -29,7 +29,7 @@ async function Process(textUser, number) {
         template = doc.template_message;
         const parent = doc.parent;
         console.log(parent)
-        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage, parent);
+        processDocument(doc, textUser, number, models, dbData, inputMessages, parentTargetMessage, linkImage, typeMessage, parent, template);
       });
   
       let dataTemplate;
@@ -54,13 +54,13 @@ async function Process(textUser, number) {
     }
 }
 
-async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, childLinkImage, childTypeMessage, parent) {
+async function processDocument(doc, textUser, number, models, dbData, inputMessages, targetMessage, childLinkImage, childTypeMessage, parent, template) {
     const normalizedTextUser = removeDiacritics(textUser).toLowerCase();
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
       console.log(childTypeMessage, parent)
-      if(childTypeMessage === "message" && parent === true){
+      if(childTypeMessage === "message" && parent === true && template === false){
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageText(targetMessage, number);
@@ -105,7 +105,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             const childLinkImage = childDoc.link;
             const childTypeMessage = childDoc.messageType;
             const parent = childDoc.parent;
-            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage, parent);
+            const template = childDoc.template_message;
+            processDocument(childDocument, textUser, number, models, dbData, childInputMessages, childTargetMessage, childLinkImage, childTypeMessage, parent, template);
         }
     });
 }
