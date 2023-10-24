@@ -51,7 +51,10 @@ function MessageList(number, body, footer, savedTemplateMessage){
         "to": number,
         "type": "interactive",
         "interactive": {
-            "header": {},
+            "header": {
+                "type": "default" 
+
+            },
             "type": "list",
             "body": {
                 "text": body
