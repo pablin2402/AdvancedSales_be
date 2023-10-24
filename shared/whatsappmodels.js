@@ -25,6 +25,7 @@ function SampleDocument(number, pdf){
 }
 function SampleImage(number,image){
     const data = JSON.stringify({
+        "recipient_type": "individual",
         "messaging_product": "whatsapp",
         "to": number,
         "type": "image",  

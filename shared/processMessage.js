@@ -92,9 +92,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
         }
         if (childTypeMessage === "image" && parent === false) {
           console.log('entre')
-
-          let dates = new Date();
-          const messageKeys = `${number}:${textUser}:${dates}`;
+          const messageKeys = `${number}:${textUser}`;
           if (!processedMessages.has(messageKeys)) {
             var modelImage = whatsappModel.SampleImage(number,childLinkImage);
             models.push(modelImage);
