@@ -35,12 +35,9 @@ async function Process(textUser, number) {
       dbDataTemplate.forEach(doc => {
         dataTemplate = doc;
       });
-      console.log(template)
       if (template === true) {
-        console.log("lo logre :v")
-
         const messageKey = `${number}:${textUser}`;
-        if (processedMessages.has(messageKey)) {
+        if (!processedMessages.has(messageKey)) {
           var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
           models.push(model);
           processedMessages.add(messageKey);
@@ -63,10 +60,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       console.log(childTypeMessage, parent, template)
       if(childTypeMessage === "message" && parent === true && template === false){
         const messageKey = `${number}:${textUser}`;
-        console.log("lo logre")
         if (!processedMessages.has(messageKey)) {
-          console.log("lo logre xt3716713")
-
           var model = whatsappModel.MessageText(targetMessage, number);
           models.push(model);
           processedMessages.add(messageKey);
@@ -85,7 +79,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
             processedMessages.add(messageKey);
           }
           addedMessage = false;
-
         }
         if (childTypeMessage === "image") {
           let dates = new Date();
