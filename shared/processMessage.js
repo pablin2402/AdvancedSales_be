@@ -57,7 +57,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
-      console.log(childTypeMessage, parent, template)
       if(childTypeMessage === "message" && parent === true && template === false){
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
@@ -72,7 +71,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
         const messageKey = `${number}:${textUser}`;
-        if(childTypeMessage === "message"){
+        if(childTypeMessage === "message" && parent === true && template === false){
           if (!processedMessages.has(messageKey)) {
             var model = whatsappModel.MessageText(targetMessage, number);
             models.push(model);
