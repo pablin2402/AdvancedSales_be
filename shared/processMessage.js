@@ -71,7 +71,6 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
-         console.log('entre')
         const messageKey = `${number}:${textUser}`;
         if(childTypeMessage === "message" && parent === true && template === false){
           if (!processedMessages.has(messageKey)) {
@@ -82,6 +81,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           addedMessage = false;
         }
         if(childTypeMessage === "message" && parent === false){
+          console.log('entre imagen')
+
           if (!processedMessages.has(messageKey)) {
             var model = whatsappModel.MessageText(targetMessage, number);
             models.push(model);
@@ -90,6 +91,8 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           addedMessage = false;
         }
         if (childTypeMessage === "image" && parent === false) {
+          console.log('entre')
+
           let dates = new Date();
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
