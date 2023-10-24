@@ -57,6 +57,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
     const synonyms = synonymsLibrary.getSynonyms(textUser);
     let addedMessage = true;
     if (addedMessage) {
+      console.log(childTypeMessage, parent, template)
       if(childTypeMessage === "message" && parent === true && template === false){
         const messageKey = `${number}:${textUser}`;
         if (!processedMessages.has(messageKey)) {
@@ -70,6 +71,7 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
       if (inputMessages.some(keyword => normalizedTextUser.includes(keyword)) ||
           synonyms.some(synonym => inputMessages.includes(synonym.toLowerCase()))
       ) {
+         console.log('entre')
         const messageKey = `${number}:${textUser}`;
         if(childTypeMessage === "message" && parent === true && template === false){
           if (!processedMessages.has(messageKey)) {
