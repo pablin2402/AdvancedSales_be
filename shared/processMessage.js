@@ -79,7 +79,15 @@ async function processDocument(doc, textUser, number, models, dbData, inputMessa
           }
           addedMessage = false;
         }
-        if (childTypeMessage === "image") {
+        if(childTypeMessage === "message" && parent === false){
+          if (!processedMessages.has(messageKey)) {
+            var model = whatsappModel.MessageText(targetMessage, number);
+            models.push(model);
+            processedMessages.add(messageKey);
+          }
+          addedMessage = false;
+        }
+        if (childTypeMessage === "image" && parent === false) {
           let dates = new Date();
           const messageKeys = `${number}:${textUser}:${dates}`;
           if (!processedMessages.has(messageKeys)) {
