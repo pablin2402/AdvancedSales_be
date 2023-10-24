@@ -46,6 +46,7 @@ function MessageList(number, body, footer, savedTemplateMessage){
       };
     console.log(centroDeAtencionSection)
     const data = JSON.stringify({
+        "messaging_product": "whatsapp",
         "recipient_type": "individual",
         "to": number,
         "type": "interactive",
