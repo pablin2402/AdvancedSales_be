@@ -13,6 +13,7 @@ const getTemplateMessage = async (idClient) => {
     return await TemplateMessage.find({ idClient: idClient });
 };
 const processedMessages = new Set();
+const numberList = new Set();
 
 async function Process(textUser, number) {
     var models = [];
@@ -37,10 +38,13 @@ async function Process(textUser, number) {
       });
       if (template === true) {
         const messageKey = `${number}:${textUser}`;
-        if (!processedMessages.has(messageKey)) {
-          var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
-          models.push(model);
-          processedMessages.add(messageKey);
+        if(!numberList.has(number)){
+          if (!processedMessages.has(messageKey)) {
+            var model = whatsappModel.MessageList(number, dataTemplate.text, dataTemplate.footer, dataTemplate);
+            models.push(model);
+            processedMessages.add(messageKey);
+            numberList.add(number);
+          }
         }
       }
       models.forEach(model => {
