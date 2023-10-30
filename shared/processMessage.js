@@ -48,7 +48,7 @@ async function Process(textUser, number) {
         }
       }
       models.forEach(model => {
-        whatsappService.SendMessageWhatsApp1(model);
+        whatsappService.SendMessageWhatsApp1(model,number);
       });
       models = [];
     } catch (error) {
