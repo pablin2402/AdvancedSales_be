@@ -6,6 +6,7 @@ const getClientInfo = async (number) => {
 };
 
 async function SendMessageWhatsApp1(data, number){
+  console.log(number)
     const token = await getClientInfo(number);
     let dataTemplate;
       token.forEach(doc => {
