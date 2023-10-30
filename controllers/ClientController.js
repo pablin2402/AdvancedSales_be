@@ -6,8 +6,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
-
-
 const postNewAccount = (req, res) => {
   try {
    const client = new Client({

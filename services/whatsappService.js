@@ -1,6 +1,17 @@
 const fs = require("fs");
 const https = require("https");
-function SendMessageWhatsApp1(data){
+const ClientInfo = require("../models/ClientInfo");
+const getClientInfo = async (number) => {
+  return await ClientInfo.find({ number: number });
+};
+
+async function SendMessageWhatsApp1(data, number){
+    const token = await getClientInfo(number);
+    let dataTemplate;
+      token.forEach(doc => {
+        dataTemplate = doc;
+      });
+    console.log(dataTemplate.token)
     const options = {
         host: "graph.facebook.com",
         path: "/v17.0/108092808842052/messages",
@@ -8,7 +19,7 @@ function SendMessageWhatsApp1(data){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer EAAMaY0K534YBO1DbtbTnoh9WF4xmxmEIi81ZATAki5omzbHZBsQRZAW6T90hiXI9MKGdhyY0rJG71ShZBskle92bTob9i9bP7BZAksPK24ZCAHzYhUUdlDCCBfg20KVPGrVc5aFAPa8ZBOPxpiyQewFp43MourBH3hWh6PuUqE7FO4XMoWDSw2FtyY5PNH1gKfTOPna8MTgNF7MlFHIlX4ZD"
+            Authorization: "Bearer"+" "+ dataTemplate.token,
         }
     };
     const req = https.request(options, res => {

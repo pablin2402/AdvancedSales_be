@@ -57,7 +57,7 @@ const SendMessage = (req, res) => {
       req.body.fullMessage,
       req.body.recipientNumber
     );
-    whatsappService.SendMessageWhatsApp1(model);
+    whatsappService.SendMessageWhatsApp1(model, req.body.recipientNumber);
     saveMessage(req);
   }else if (req.body.message_type === "document"){
     var model = whatsappModel.SampleDocument(

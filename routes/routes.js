@@ -13,6 +13,7 @@ const gmailController = require("../controllers/GmailController");
 const clientLocationController = require("../controllers/ClientLocationController");
 const textController = require("../controllers/TextProcessController");
 const TemplateController = require("../controllers/TemplateMessageController");
+const clientController = require("../controllers/ClientInfoController");
 
 router
 .get("/", whatsAppController.VerifyToken)
@@ -75,6 +76,8 @@ router
 
 .post("/template",TemplateController.postTemplate)
 .post("/template/list",TemplateController.getListOfTextProcess)
-.delete("/template/id",TemplateController.deleteTemplate);
+.delete("/template/id",TemplateController.deleteTemplate)
+
+.post("/client/info", clientController.postClientInfo);
 
 module.exports = router;
