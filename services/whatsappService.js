@@ -20,7 +20,7 @@ async function SendMessageWhatsApp1(data, number){
         body: data,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer"+" "+ dataTemplate.token,
+            Authorization: "Bearer EAAMaY0K534YBO8ge8n9ryLtMzBYHtqB4Yh2wZC0dibiTa6UNR4oFLkVfjmPOjCZAzwQjrHkXkECWqGhr5JzA5UoGrSLFZBLhWWwDYMN2daBv0YSjbZA4ufXunLAq1KlNCE6yKqRDpleiU3O75dr7BZCpebhtI0n2OLte8285j3145DyrnJ7LjrZArAuA19NrTk",//+" "+ dataTemplate.token,
         }
     };
     const req = https.request(options, res => {
