@@ -11,7 +11,7 @@ async function SendMessageWhatsApp1(data, number){
       token.forEach(doc => {
         dataTemplate = doc;
       });
-    console.log(dataTemplate.token)
+    console.log(dataTemplate)
     const options = {
         host: "graph.facebook.com",
         path: "/v17.0/108092808842052/messages",
