@@ -45,7 +45,6 @@ function MessageList(number, body, footer, savedTemplateMessage){
           "description": action.subtitle
         }))
       };
-    console.log(centroDeAtencionSection)
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
@@ -99,7 +98,6 @@ function MessageComprar(number){
     });
     return data;
 }
-
 function MessageLocation(number){
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
