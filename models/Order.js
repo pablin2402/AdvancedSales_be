@@ -1,3 +1,4 @@
+const { Double } = require("mongodb");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const orderSchema = new Schema({
@@ -18,6 +19,9 @@ const orderSchema = new Schema({
   direction: { type: String, require: true },
   zona: { type: String, require: true },
   city: { type: String, require: true },
+  accountStatus: { type: String, require: true },
+  dueDate: { type: Date},
+  earnMoney: { type: Number, require: true },
 
 });
 

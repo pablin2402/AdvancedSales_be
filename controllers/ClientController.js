@@ -109,10 +109,10 @@ const postClient = (req, res) => {
       notes: req.body.notes,
       id_user: req.body.id_user,
       id_owner: req.body.id_owner,
-      status: "ARCHIVED"
+      status: "SHOW",
+      identityNumber: req.body.identityNumber
 
     });
-    console.log(req.body);
     clients.save((err, user) => {
       if (err) {
         res.status(500).send({ message: err });

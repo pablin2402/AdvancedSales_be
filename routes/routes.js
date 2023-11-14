@@ -14,7 +14,8 @@ const clientLocationController = require("../controllers/ClientLocationControlle
 const textController = require("../controllers/TextProcessController");
 const TemplateController = require("../controllers/TemplateMessageController");
 const clientController = require("../controllers/ClientInfoController");
-
+const noteController = require("../controllers/NoteController");
+const SalesHistorialController = require("../controllers/SalesHistorialController")
 router
 .get("/", whatsAppController.VerifyToken)
 .post("/", whatsAppController.ReceivedMessage)
@@ -48,6 +49,9 @@ router
 
 .post("/order", orderController.postOrder)
 .post("/order/id", orderController.getOrderById)
+.post("/order/id/user", orderController.getOrderByIdAndClient)
+.delete("/order/id", orderController.deleteOrder)
+
 .get("/mail/user/:email",gmailController.getUser)
 .get("/mail/message",gmailController.getDrafts)
 .get("/mail/message/id",gmailController.getMessagesById)
@@ -77,6 +81,13 @@ router
 .post("/template",TemplateController.postTemplate)
 .post("/template/list",TemplateController.getListOfTextProcess)
 .delete("/template/id",TemplateController.deleteTemplate)
+
+.get("/note",noteController.getNote)
+.post("/note",noteController.postNote)
+
+.post("/sales/inform",SalesHistorialController.getSalesHistorial)
+.post("/sales/inform/client",SalesHistorialController.getSalesHistorialPerClient)
+.post("/sales",SalesHistorialController.postSalesHistorial)
 
 .post("/client/info", clientController.postClientInfo);
 

@@ -50,8 +50,10 @@ const postProduct = (req, res) => {
       inventory: req.body.inventory,
       id_user : req.body.id_user,
       brand: req.body.brand,
-      status: req.body.status,
-      productId: req.body.productId
+      status: true,
+      buttonStatus: false,
+      productId: req.body.productId,
+      addDisscount: 0
     });
     product.save((err,product) => {
       if (err) {
@@ -69,7 +71,9 @@ const postProduct = (req, res) => {
         id_user : product.id_user,
         brand: product.brand,
         status: product.status,
-        productId: product.productId
+        productId: product.productId,
+        buttonStatus: product.buttonStatus,
+        addDisscount: product.addDisscount
       });
     });
   } catch (e) {

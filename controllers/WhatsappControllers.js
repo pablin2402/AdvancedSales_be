@@ -84,7 +84,10 @@ const SendMessage = (req, res) => {
     whatsappService.SendMessageWhatsApp1(model);
     whatsappService.SendMessageWhatsApp1(model2);
     saveMessage(req);
+  }else if (req.body.message_type === "Note"){
+    saveMessage(req);
   }
+
 }
 function saveMessage(req, res) {
   try {

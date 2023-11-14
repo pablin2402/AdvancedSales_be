@@ -4,13 +4,17 @@ const getOrderById = async (req, res) => {
   const orderList = await Order.find({id_owner: req.body.id_owner});
   res.json(orderList);
 };
+const getOrderByIdAndClient = async (req, res) => {
+  const orderList = await Order.find({id_owner: req.body.id_owner, userId: req.body.userId});
+  res.json(orderList);
+};
 const postOrder = (req, res) => {
   try {
    const order = new Order({
     order_id: req.body.order_id,
     orderName: req.body.OrderName,
     receiveNumber:req.body.receiveNumber,
-    noteAditional: req.body.noteAditional,
+    noteAditional: "",
     userId: req.body.userId,
     id_owner: req.body.id_owner,
     products: req.body.products,
@@ -18,11 +22,14 @@ const postOrder = (req, res) => {
     tax: req.body.tax,
     totalAmount:req.body.totalAmount,
     nit: req.body.nit,
-    razonSocial: req.body.razonSocial,
+    razonSocial: "",
     cellphone: req.body.cellphone,
     direction: req.body.direction,
-    zona: req.body.zona,
-    city: req.body.city,
+    zona: "",
+    city: "",
+    accountStatus: req.body.accountStatus,
+    dueDate: req.body.dueDate,
+    earnMoney: req.body.earnMoney
     });
     order.save((err,order) => {
       if (err) {
@@ -46,14 +53,30 @@ const postOrder = (req, res) => {
         direction: order.direction,
         zona: order.zona,
         city: order.city,
+        accountStatus: order.accountStatus,
+        dueDate: order.dueDate,
+        earnMoney: order.earnMoney,
+
       });
     });
   } catch (e) {
     myConsole.log(e);
  }
 };
+const deleteOrder = async (req, res) => {
+  console.log(req.body.order_id)
+  const order_id = req.body.order_id;
+  const deleteProduct = await Order.deleteOne({ order_id: order_id });
+
+  if (deleteProduct.deletedCount === 0) {
+    return res.status(404).json({ error: 'Orden no encontrado' });
+  }
+  return res.status(200).json({ message: 'Orden eliminado correctamente' });
+};
 
 module.exports = {
     getOrderById,
+    getOrderByIdAndClient,
     postOrder,
+    deleteOrder
 };

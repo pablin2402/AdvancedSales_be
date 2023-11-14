@@ -8,6 +8,7 @@ const clientSchema = new Schema({
   creationDate: { type: Date, default: Date.now }, 
   directionId: {type: String, require: true},
   number:{type: Number, require: true}, //REQUIRED
+  identityNumber:{type: Number, require: true}, //REQUIRED
   company: { type: String, require: true },
   email: { type: String, require: true },
   socialNetwork: { type: String, require: true },
