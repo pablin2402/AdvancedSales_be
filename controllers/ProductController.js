@@ -3,10 +3,10 @@ const Product = require("../models/Product");
 
 const getProductsById = async (req, res) => {
   if(req.body.status === true){
-    await Product.find({id_user:String(req.body.id_user), status : req.body.status}).populate("categoryId").populate("priceId").populate("inventory").then(p=>  res.json(p));
+    await Product.find({id_user:String(req.body.id_user), status : req.body.status}).populate("categoryId").populate("supplierId").populate("priceId").populate("inventory").then(p=>  res.json(p));
   }
   else{
-    await Product.find({id_user:String(req.body.id_user)}).populate("categoryId").populate("priceId").populate("inventory").then(p=>  res.json(p));
+    await Product.find({id_user:String(req.body.id_user)}).populate("categoryId").populate("priceId").populate("supplierId").populate("inventory").then(p=>  res.json(p));
   }
 };
 const deleteProduct = async (req, res) => {
@@ -43,6 +43,7 @@ const postProduct = (req, res) => {
    const product = new Product({
       productName: req.body.productName ,
       categoryId: req.body.categoryId,
+      supplierId: req.body.supplierId,
       priceId: req.body.priceId,
       productImage: req.body.productImage,
       description: req.body.description,

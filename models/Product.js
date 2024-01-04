@@ -5,6 +5,7 @@ const producytSchema = new Schema({
   productName: { type: String, require: true },
   categoryId: { type: Schema.ObjectId, ref: "Category" },
   priceId: { type: Schema.ObjectId, ref:"Price" },
+  supplierId: { type: Schema.ObjectId, ref:"Supplier" },
   productImage: { type: String, require: true },
   qty: { type: Number, require: true },
   description: { type: String, require: true },
