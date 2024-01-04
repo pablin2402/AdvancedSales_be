@@ -144,7 +144,7 @@ const updateUserStatus = async (req, res) => {
   }
 };
 const getMessagesById = async (req, res) => {
-  const clientList = await Message.find({id_message:String(req.body.id_message),});
+  const clientList = await Message.find({id_client:String(req.body.id_client)});
   res.json(clientList);
 };
 const deleteClient = async (req, res) => {

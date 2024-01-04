@@ -9,6 +9,7 @@ const getOrderByIdAndClient = async (req, res) => {
   res.json(orderList);
 };
 const postOrder = (req, res) => {
+  console.log(req.body.clientName)
   try {
    const order = new Order({
     order_id: req.body.order_id,
@@ -22,14 +23,16 @@ const postOrder = (req, res) => {
     tax: req.body.tax,
     totalAmount:req.body.totalAmount,
     nit: req.body.nit,
-    razonSocial: "",
+    razonSocial: req.body.razonSocial,
     cellphone: req.body.cellphone,
     direction: req.body.direction,
     zona: "",
     city: "",
+    clientName: req.body.clientName,
     accountStatus: req.body.accountStatus,
     dueDate: req.body.dueDate,
-    earnMoney: req.body.earnMoney
+    earnMoney: req.body.earnMoney,
+    id_client: req.body.id_client,
     });
     order.save((err,order) => {
       if (err) {
@@ -56,7 +59,8 @@ const postOrder = (req, res) => {
         accountStatus: order.accountStatus,
         dueDate: order.dueDate,
         earnMoney: order.earnMoney,
-
+        id_client: order.id_client,
+        clientName: order.clientName
       });
     });
   } catch (e) {

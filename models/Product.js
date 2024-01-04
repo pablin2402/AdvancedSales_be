@@ -16,6 +16,8 @@ const producytSchema = new Schema({
   status: { type: Boolean, require: true },
   buttonStatus: { type: Boolean, require: true },
   addDisscount: { type: Number, require: true },
+  extra: { type: Number, require: true },
+
 });
 
 module.exports = mongoose.model("Product", producytSchema);

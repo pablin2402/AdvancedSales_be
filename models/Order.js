@@ -1,4 +1,3 @@
-const { Double } = require("mongodb");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const orderSchema = new Schema({
@@ -21,8 +20,9 @@ const orderSchema = new Schema({
   city: { type: String, require: true },
   accountStatus: { type: String, require: true },
   dueDate: { type: Date},
+  clientName: { type: String, require: true },
   earnMoney: { type: Number, require: true },
-
+  id_client: { type: String, require: true },
 });
 
 module.exports = mongoose.model("Order", orderSchema);

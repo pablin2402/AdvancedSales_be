@@ -15,7 +15,10 @@ const textController = require("../controllers/TextProcessController");
 const TemplateController = require("../controllers/TemplateMessageController");
 const clientController = require("../controllers/ClientInfoController");
 const noteController = require("../controllers/NoteController");
-const SalesHistorialController = require("../controllers/SalesHistorialController")
+const SalesHistorialController = require("../controllers/SalesHistorialController");
+const supplierController = require("../controllers/SupplierController");
+
+
 router
 .get("/", whatsAppController.VerifyToken)
 .post("/", whatsAppController.ReceivedMessage)
@@ -89,6 +92,9 @@ router
 .post("/sales/inform/client",SalesHistorialController.getSalesHistorialPerClient)
 .post("/sales",SalesHistorialController.postSalesHistorial)
 
-.post("/client/info", clientController.postClientInfo);
+.post("/client/info", clientController.postClientInfo)
+
+.post("/supplier/info", supplierController.postSupplier)
+.post("/supplier", supplierController.getSupplier);
 
 module.exports = router;

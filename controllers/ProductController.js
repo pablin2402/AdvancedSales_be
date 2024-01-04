@@ -53,7 +53,8 @@ const postProduct = (req, res) => {
       status: true,
       buttonStatus: false,
       productId: req.body.productId,
-      addDisscount: 0
+      addDisscount: 0,
+      extra:0
     });
     product.save((err,product) => {
       if (err) {
@@ -73,7 +74,9 @@ const postProduct = (req, res) => {
         status: product.status,
         productId: product.productId,
         buttonStatus: product.buttonStatus,
-        addDisscount: product.addDisscount
+        addDisscount: product.addDisscount,
+        extra: product.extra
+
       });
     });
   } catch (e) {
